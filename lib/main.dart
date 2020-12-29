@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 
+import './widgets/tabs_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -51,25 +53,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState(){
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: new SplashScreen(
-        seconds: 14,
-        navigateAfterSeconds: new AfterSplash(),
+        seconds: 3,
+        navigateAfterSeconds: new TabsPage(),
         title: new Text('Welcome To Almighty Enterprises',
           style: new TextStyle(
               fontSize: 20.0
@@ -81,24 +76,5 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     );
   }
-  }
 
-  class AfterSplash extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-  return new Scaffold(
-  appBar: new AppBar(
-  title: new Text("Welcome In SplashScreen Package"),
-  automaticallyImplyLeading: false
-  ),
-  body: new Center(
-  child: new Text("Done!",
-  style: new TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 30.0
-  ),),
-
-  ),
-  );
-  }
 }
