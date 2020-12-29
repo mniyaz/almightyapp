@@ -7,15 +7,17 @@ class History {
 
   History(
       {this.auditId,
-        this.auditDescription,
-        this.logCreatedTime,
-        this.actionDoneBy,
-        this.auditType});
+      this.auditDescription,
+      this.logCreatedTime,
+      this.actionDoneBy,
+      this.auditType});
 
   History.fromJson(Map<String, dynamic> json) {
     auditId = json['auditId'];
     auditDescription = json['auditDescription'];
-    logCreatedTime = json['logCreatedTime'];
+    logCreatedTime = json['logCreatedTime'] == null
+        ? null
+        : DateTime.parse(json['logCreatedTime'] as String);
     actionDoneBy = json['actionDoneBy'];
     auditType = json['auditType'];
   }
@@ -24,7 +26,7 @@ class History {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['auditId'] = this.auditId;
     data['auditDescription'] = this.auditDescription;
-    data['logCreatedTime'] = this.logCreatedTime;
+    data['logCreatedTime'] = this.logCreatedTime?.toIso8601String();
     data['actionDoneBy'] = this.actionDoneBy;
     data['auditType'] = this.auditType;
     return data;

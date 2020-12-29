@@ -33,7 +33,9 @@ class Order {
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
-    orderCreatedTime = json['orderCreatedTime'];
+    orderCreatedTime = json['orderCreatedTime']  == null
+        ? null
+        : DateTime.parse(json['orderCreatedTime'] as String);
     totalPriceBeforeTax = json['totalPriceBeforeTax'];
     cGSTPercentage = json['CGSTPercentage'];
     sGSTPercentage = json['SGSTPercentage'];
@@ -61,7 +63,7 @@ class Order {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderId'] = this.orderId;
-    data['orderCreatedTime'] = this.orderCreatedTime;
+    data['orderCreatedTime'] = this.orderCreatedTime?.toIso8601String();
     data['totalPriceBeforeTax'] = this.totalPriceBeforeTax;
     data['CGSTPercentage'] = this.cGSTPercentage;
     data['SGSTPercentage'] = this.sGSTPercentage;

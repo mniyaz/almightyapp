@@ -22,7 +22,9 @@ class Items {
 
   Items.fromJson(Map<String, dynamic> json) {
     cartId = json['cartId'];
-    cartCreatedTime = json['cartCreatedTime'];
+    cartCreatedTime = json['cartCreatedTime']  == null
+        ? null
+        : DateTime.parse(json['cartCreatedTime'] as String);
     productName = json['productName'];
     qty = json['qty'];
     price = json['price'];
@@ -35,7 +37,7 @@ class Items {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['cartId'] = this.cartId;
-    data['cartCreatedTime'] = this.cartCreatedTime;
+    data['cartCreatedTime'] = this.cartCreatedTime?.toIso8601String();
     data['productName'] = this.productName;
     data['qty'] = this.qty;
     data['price'] = this.price;

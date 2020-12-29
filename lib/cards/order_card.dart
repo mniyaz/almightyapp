@@ -24,6 +24,7 @@ class OrderCardState extends State<OrderCard> {
   void initState() {
     super.initState();
   }
+
   final f = new DateFormat('yyyy-MM-dd');
 
   OrderCardState(this.order);
@@ -32,53 +33,59 @@ class OrderCardState extends State<OrderCard> {
     return new Card(
       child: Column(children: <Widget>[
         Container(
-          padding: const EdgeInsets.all(8.0),
-          color: Color(0xffeceff0),
-          child: Column (
-            children : [Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                    order.orderId.toString(),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-              Expanded(
-                child: new Container(),
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                    order.orderStatus,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-            ],
-          ),
+            padding: const EdgeInsets.all(8.0),
+            color: Color(0xffeceff0),
+            child: Column(children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Order No: " + order.orderId.toString(),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                  Expanded(
+                    child: new Container(),
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: Text(order.orderStatus,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
-                  Text(
-                    f.format(order.orderCreatedTime),
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      )),
+                  Container(
+                      alignment: Alignment.centerRight,
+                      child:
+                          Text("Placed on :" + f.format(order.orderCreatedTime),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ))),
+                  Expanded(
+                    child: new Container(),
+                  ),
+                  Container(
+                      alignment: Alignment.centerRight,
+                      child: Text("Total :" + order.grandTotal,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                          ))),
                 ],
               )
-          ])
-        ),
+            ])),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
@@ -88,57 +95,51 @@ class OrderCardState extends State<OrderCard> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 DataTable(
-                  headingRowHeight : 0.0,
-                  dividerThickness: 0.0,
-                  columns: [
-                    DataColumn(
-                        label: Text("Item")
-                    ),
-                    DataColumn(
-                        label: Text("Qty")
-                    ),
-                    DataColumn(
-                        label: Text("Price")
-                    ),
-                  ],
-                  rows: order.items.map((item) =>
-                        DataRow(
-                      cells: [
-                        DataCell(
-                          Container(
-                            child: Text(
-                              item.productName,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                    headingRowHeight: 0.0,
+                    dividerThickness: 0.0,
+                    columns: [
+                      DataColumn(label: Text("Item")),
+                      DataColumn(label: Text("Qty")),
+                      DataColumn(label: Text("Price")),
+                    ],
+                    rows: order.items
+                        .map(
+                          (item) => DataRow(
+                            cells: [
+                              DataCell(
+                                Container(
+                                  child: Text(
+                                    item.productName,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  child: Text(
+                                    item.qty.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  child: Text(
+                                    "\u20B9" + item.rowTotal,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        DataCell(
-                          Container(
-                            child: Text(
-                              item.qty.toString(),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            child: Text(
-                              item.rowTotal,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                      ).toList()
-                ),
+                        )
+                        .toList()),
               ]),
         ),
       ]),
       margin: const EdgeInsets.all(5.0),
     );
   }
-
 
   showURLDialog(windowurl) {
     AwesomeDialog(
