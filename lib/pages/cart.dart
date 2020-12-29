@@ -58,7 +58,7 @@ class CartPageState extends State<CartPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              new Text("Total : \u20B9"+globals.order.grandTotal),
+              new Text("Total : \u20B9"+globals.order.GrandTotal),
 
               new RaisedButton(
                 onPressed: (){
@@ -111,10 +111,32 @@ class CartPageState extends State<CartPage> {
       globals.order.tmpOrderId = "9952515251202012291917";
       Contact contact = Contact();
       contact.authKey = "-1689287759";
+      contact.contactFirstName = "Vinoth";
+      contact.contactMobile = "9952515251";
       contact.contactId = 48;
       globals.order.contact = contact;
       Map orderJson = globals.order.toJson();
+      orderJson.remove("orderId");
+    orderJson.remove("CGST");
+    orderJson.remove("SGST");
+    orderJson.remove("IGST");
+    orderJson.remove("CGSTPercentage");
+    orderJson.remove("SGSTPercentage");
+    orderJson.remove("IGSTPercentage");
+    orderJson.remove("paid");
+    orderJson.remove("paidDate");
+    orderJson.remove("orderCreatedTime");
+    orderJson.forEach((key, value) {
+      if (value is Map) {
+        value.removeWhere((key, value) => key == "cartId");
+        value.removeWhere((key, value) => key == "CGSTPercentage");
+        value.removeWhere((key, value) => key == "SGSTPercentage");
+        value.removeWhere((key, value) => key == "IGSTPercentage");
+      }
+    });
 
+      print(json.encode(orderJson));
+      apiRequest(url, orderJson);
   }
 
   Future<String> apiRequest(String url, Map orderJson) async {
@@ -133,7 +155,7 @@ class CartPageState extends State<CartPage> {
   void updateTotal(){
     int total = globals.cartItems.fold(0, (sum, item) => sum + int.parse(item.rowTotal));
     globals.order.totalPriceBeforeTax = total.toString();
-    globals.order.grandTotal = total.toString();
+    globals.order.GrandTotal = total.toString();
   }
 
   void handleClick(String value) {

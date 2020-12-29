@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'contact_model.g.dart';
+
+@JsonSerializable()
 class Contact {
   int contactId;
   String contactFirstName;
@@ -14,23 +19,6 @@ class Contact {
         this.contactActive,
         this.contactGroup});
 
-  Contact.fromJson(Map<String, dynamic> json) {
-    contactId = json['contactId'];
-    contactFirstName = json['contactFirstName'];
-    contactMobile = json['contactMobile'];
-    authKey = json['authKey'];
-    contactActive = json['contactActive'];
-    contactGroup = json['contactGroup'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['contactId'] = this.contactId;
-    data['contactFirstName'] = this.contactFirstName;
-    data['contactMobile'] = this.contactMobile;
-    data['authKey'] = this.authKey;
-    data['contactActive'] = this.contactActive;
-    data['contactGroup'] = this.contactGroup;
-    return data;
-  }
+  factory Contact.fromJson(Map<String, dynamic> json) => _$ContactFromJson(json);
+  Map<String, dynamic> toJson() => _$ContactToJson(this);
 }

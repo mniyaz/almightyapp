@@ -28,6 +28,7 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
     setState(() {
       orderListFromApi =
           (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      print(responseJson);
       orderList = orderListFromApi;
     });
   }
@@ -79,7 +80,8 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
                     child: ListView.builder(
                   itemCount: orderList.length,
                   itemBuilder: (context, i) {
-                    return OrderCard(orderList[i]);
+                    final item = orderList[i];
+                    return OrderCard(key: ObjectKey(item),order:orderList[i]);
                   },
                 )),
               ])

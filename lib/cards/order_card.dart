@@ -7,9 +7,8 @@ import 'package:intl/intl.dart';
 
 class OrderCard extends StatefulWidget {
   final Order order;
-  final VoidCallback onDelete;
 
-  OrderCard(this.order, {this.onDelete});
+  const OrderCard({Key key, this.order}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -78,7 +77,7 @@ class OrderCardState extends State<OrderCard> {
                   ),
                   Container(
                       alignment: Alignment.centerRight,
-                      child: Text("Total :" + order.grandTotal,
+                      child: Text("Total :\u20B9" + order.GrandTotal,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 14,

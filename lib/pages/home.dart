@@ -135,7 +135,14 @@ class HomePageState extends State<HomePage> {
 
 
               onRefresh: getProductList,)
-                : Center(child: Text("No data found for selected Filter")),
+                : Center(child: Column( children: <Widget> [
+                  Text("No data found for selected Filter"),
+                   RaisedButton(
+                        child: Text("Refresh"),
+                       onPressed: (){
+                     getProductList();
+                   })
+                 ])),
           ),
         ],
       ),
@@ -169,7 +176,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       int total = globals.cartItems.fold(0, (sum, item) => sum + int.parse(item.rowTotal));
       globals.order.totalPriceBeforeTax = total.toString();
-      globals.order.grandTotal = total.toString();
+      globals.order.GrandTotal = total.toString();
     });
   }
   void handleClick(String value) {

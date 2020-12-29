@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'history_model.g.dart';
+
+@JsonSerializable()
 class History {
   int auditId;
   String auditDescription;
@@ -12,23 +17,6 @@ class History {
       this.actionDoneBy,
       this.auditType});
 
-  History.fromJson(Map<String, dynamic> json) {
-    auditId = json['auditId'];
-    auditDescription = json['auditDescription'];
-    logCreatedTime = json['logCreatedTime'] == null
-        ? null
-        : DateTime.parse(json['logCreatedTime'] as String);
-    actionDoneBy = json['actionDoneBy'];
-    auditType = json['auditType'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['auditId'] = this.auditId;
-    data['auditDescription'] = this.auditDescription;
-    data['logCreatedTime'] = this.logCreatedTime?.toIso8601String();
-    data['actionDoneBy'] = this.actionDoneBy;
-    data['auditType'] = this.auditType;
-    return data;
-  }
+  factory History.fromJson(Map<String, dynamic> json) => _$HistoryFromJson(json);
+  Map<String, dynamic> toJson() => _$HistoryToJson(this);
 }
