@@ -14,7 +14,7 @@ class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback onAdd;
 
-  ProductCard(this.product, {this.onAdd});
+  const ProductCard({Key key, this.product, this.onAdd}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {

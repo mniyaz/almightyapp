@@ -74,10 +74,9 @@ class CartPageState extends State<CartPage> {
     ));
   }
   void deleteItem(Items item){
-
     globals.cartItems.remove(item);
     setState(() {
-
+      updateTotal();
     });
   }
   void updateCartTotal(index){

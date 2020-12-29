@@ -16,15 +16,19 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   TextEditingController controller = new TextEditingController();
+  List<Product> productList;
+  List<Product> productListFromApi = List<Product>();
+  List<Product> searchResult;
   Future<Null> getProductList() async {
     final response = await http.get("https://almightysnk.com/rest/productcontroller/getlist/9952515251");
     final responseJson = json.decode(response.body);
-
+    productListFromApi = (responseJson as List)
+        .map((i) => Product.fromJson(i))
+        .toList();
     setState(() {
-      productListFromApi = (responseJson as List)
-          .map((i) => Product.fromJson(i))
-          .toList();
-      productList = productListFromApi;
+      if(productList == null)
+        productList = List<Product>();
+      productList.addAll(productListFromApi);
     });
 
   }
@@ -100,48 +104,36 @@ class HomePageState extends State<HomePage> {
       body: SafeArea(
           child: new Column(
         children: <Widget>[
-          new Container(
-            //color: Theme.of(context).primaryColor,
-            child: new Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new Card(
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
-                    controller: controller,
-                    decoration: new InputDecoration(
-                      hintText: 'Search Product',
-                      border: InputBorder.none,
-                    ),
-                    onChanged: onSearchTextChanged,
-                  ),
-                  trailing: new IconButton(
-                    icon: new Icon(Icons.cancel),
-                    onPressed: () {
-                      controller.clear();
-                      onSearchTextChanged('');
-                    },
-                  ),
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (value) {
+                filterSearchResults(value);
+              },
+              controller: controller,
+              decoration: InputDecoration(
+                  labelText: "Search",
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
             ),
           ),
           new Expanded(
-            child: searchResult.length != 0 || controller.text.isNotEmpty
-                ? new ListView.builder(
-              itemCount: searchResult.length,
-              itemBuilder: (context, i) {
-                return ProductCard(searchResult[i], onAdd: () => updateCart(i));
-              },
-            )
-                : productList != null && productList.length > 0
+            child:
+                 productList != null && productList.length > 0
                 ?  RefreshIndicator(
               child:new ListView.builder(
-              itemCount: productList.length,
+                  shrinkWrap: true,
+                itemCount: productList.length,
               itemBuilder: (context, index) {
-                return ProductCard(productList[index], onAdd: () => updateCart(index));
-              },
-            ),
+                final item = productList[index];
+                return ProductCard(key: ObjectKey(item), product: productList[index], onAdd: () => updateCart(index));
+
+              }
+    ),
+
+
               onRefresh: getProductList,)
                 : Center(child: Text("No data found for selected Filter")),
           ),
@@ -149,6 +141,29 @@ class HomePageState extends State<HomePage> {
       ),
       ),
     );
+  }
+
+  void filterSearchResults(String query) {
+    List<Product> dummySearchList = List<Product>();
+    dummySearchList.addAll(productListFromApi);
+    if(query.isNotEmpty) {
+      List<Product> dummyListData = List<Product>();
+      dummySearchList.forEach((item) {
+        if(item.itemName.toLowerCase().contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+      });
+      productList.clear();
+      setState(() {
+        productList.addAll(dummyListData);
+      });
+      return;
+    } else {
+      productList.clear();
+      setState(() {
+        productList.addAll(productListFromApi);
+      });
+    }
   }
   void updateCart(index){
     setState(() {
@@ -166,8 +181,9 @@ class HomePageState extends State<HomePage> {
     }
   }
   onSearchTextChanged(String text) async {
+
     text = text.toLowerCase();
-    print(text);
+    if(searchResult != null)
     searchResult.clear();
     if (text.isEmpty) {
       setState(() {});
@@ -175,15 +191,18 @@ class HomePageState extends State<HomePage> {
     }
 
     productList.forEach((product) {
-      if (product.itemName.toLowerCase().contains(text))
+      if (product.itemName.toLowerCase().contains(text)) {
+        if(searchResult == null)
+        searchResult = List();
         searchResult.add(product);
+      }
+
+      setState(() {
+
+      });
     });
 
     setState(() {});
   }
 }
-
-List<Product> productList;
-List<Product> productListFromApi;
-List<Product> searchResult = [];
 
