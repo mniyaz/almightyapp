@@ -89,10 +89,11 @@ class OrderCardState extends State<OrderCard> {
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+
                 DataTable(
 
                     columns: [
@@ -106,10 +107,11 @@ class OrderCardState extends State<OrderCard> {
                             cells: [
                               DataCell(
                                 Container(
-                                  child: Text(
+                                  width: 100,
+                                  child: new Tooltip(message: item.productName, child:Text(
                                     item.productName,
                                     overflow: TextOverflow.ellipsis,
-                                  ),
+                                  )),
                                 ),
                               ),
                               DataCell(
