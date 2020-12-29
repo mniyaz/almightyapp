@@ -1,13 +1,16 @@
 import 'package:almighty/cards/order_card.dart';
 import 'package:almighty/models/order_model.dart';
 import 'package:flutter/material.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import 'package:almighty/globals.dart' as globals;
 
 import 'dart:convert';
 
 class OrderHistoryPage extends StatefulWidget {
+  final DateTime initialDate = DateTime.now();
   @override
   OrderHistoryPageState createState() => OrderHistoryPageState();
 }
@@ -15,10 +18,11 @@ class OrderHistoryPage extends StatefulWidget {
 class OrderHistoryPageState extends State<OrderHistoryPage> {
   List<Order> orderListFromApi;
   List<Order> orderList;
+  DateTime selectedDate;
 
-  Future<Null> getOrderList() async {
+  Future<Null> getOrderList(String month,String year) async {
     final response = await http.get(
-        "https://almightysnk.com/rest/ordercontroller/orderHistory/12/demo/1689270076");
+        "https://almightysnk.com/rest/ordercontroller/orderHistory/"+month+"/demo/1689270076");
 
     final responseJson = json.decode(response.body);
     setState(() {
@@ -31,7 +35,8 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
   @override
   void initState() {
     super.initState();
-    getOrderList();
+    selectedDate = widget.initialDate;
+    getOrderList("${selectedDate?.month}","${selectedDate?.year}");
   }
 
   @override
@@ -55,7 +60,19 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
           ),
         ],
       ),
-      body: RefreshIndicator(
+      body: Column(
+    children: <Widget>[
+        Row(
+    children: [
+      Text(
+        'Year: ${selectedDate?.year} Month: ' + new DateFormat("MMM").format(selectedDate).toString(),
+        style: Theme.of(context).textTheme.headline6,
+        textAlign: TextAlign.center,
+      ),
+    ],
+    ),
+        new Expanded(
+            child:RefreshIndicator(
         child: orderList != null && orderList.length != 0
             ? Column(children: [
                 Expanded(
@@ -68,9 +85,33 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
               ])
             : new Container(
                 alignment: Alignment.center, child: Text("No Orders Found.")),
-        onRefresh: getOrderList,
+        onRefresh: refreshList,
+      ),)]),floatingActionButton: Builder(
+      builder: (context) => FloatingActionButton(
+        onPressed: () {
+          showMonthPicker(
+            context: context,
+            firstDate: DateTime(DateTime.now().year - 1, 5),
+            lastDate: DateTime(DateTime.now().year + 1, 9),
+            initialDate: selectedDate ?? widget.initialDate,
+            locale: Locale("en"),
+          ).then((date) {
+            if (date != null) {
+              setState(() {
+                selectedDate = date;
+                getOrderList("${selectedDate?.month}","${selectedDate?.year}");
+              });
+            }
+          });
+        },
+        child: Icon(Icons.calendar_today),
       ),
+    ),
     );
+  }
+
+   Future<Null> refreshList() async{
+    getOrderList("${selectedDate?.month}","${selectedDate?.year}");
   }
 
   void removeItem(int index) {
@@ -87,4 +128,5 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
         break;
     }
   }
+
 }
