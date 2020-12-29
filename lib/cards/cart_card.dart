@@ -11,8 +11,8 @@ class CartCard extends StatefulWidget {
   final VoidCallback onDelete;
   final VoidCallback onChange;
 
+  const CartCard({Key key, this.product, this.onDelete,this.onChange}) : super(key: key);
 
-  CartCard(this.product, {this.onDelete, this.onChange});
 
   @override
   State<StatefulWidget> createState() {
@@ -104,7 +104,9 @@ class CartCardState extends State<CartCard> {
                                 Icons.delete,
                               ),
                               onPressed: (){
+
                                 widget.onDelete();
+
                               },
                             ),
                           ),

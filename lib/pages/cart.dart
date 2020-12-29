@@ -1,3 +1,4 @@
+import 'package:almighty/models/items_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:almighty/globals.dart' as globals;
@@ -44,13 +45,15 @@ class CartPageState extends State<CartPage> {
         child:  ListView.builder(
         itemCount: globals.cartItems.length,
         itemBuilder: (context, i) {
-          return CartCard(globals.cartItems[i], onDelete: () => removeItem(i), onChange: () => updateCartTotal(i),);
+          final item = globals.cartItems[i];
+          return CartCard(key: ObjectKey(item) ,product: globals.cartItems[i],onDelete: () => deleteItem(item), onChange: () => updateCartTotal(i),);
         },
       ) ,),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               new Text("Total : \u20B9"+globals.order.grandTotal),
+
               new RaisedButton(
                 onPressed: (){
 
@@ -70,7 +73,13 @@ class CartPageState extends State<CartPage> {
     )
     ));
   }
+  void deleteItem(Items item){
 
+    globals.cartItems.remove(item);
+    setState(() {
+
+    });
+  }
   void updateCartTotal(index){
     setState(() {
       updateTotal();
@@ -83,13 +92,6 @@ class CartPageState extends State<CartPage> {
     globals.order.grandTotal = total.toString();
   }
 
-  void removeItem(int index) {
-    setState(() {
-      globals.cartItems = List.from(globals.cartItems)
-        ..removeAt(index);
-      updateTotal();
-    });
-  }
   void handleClick(String value) {
     switch (value) {
       case 'Logout':

@@ -95,11 +95,10 @@ class OrderCardState extends State<OrderCard> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 DataTable(
-                    headingRowHeight: 0.0,
-                    dividerThickness: 0.0,
+
                     columns: [
                       DataColumn(label: Text("Item")),
-                      DataColumn(label: Text("Qty")),
+                      DataColumn(label: Text("Kgs")),
                       DataColumn(label: Text("Price")),
                     ],
                     rows: order.items
