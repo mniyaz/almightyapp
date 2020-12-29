@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
+import 'package:almighty/models/order_model.dart';
 import 'package:flutter/material.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import 'package:almighty/globals.dart' as globals;
 import '../cards/cart_card.dart';
@@ -56,7 +62,7 @@ class CartPageState extends State<CartPage> {
 
               new RaisedButton(
                 onPressed: (){
-
+                  showCheckoutDialog();
                 },
                 textColor: Colors.white,
                 color: Colors.green,
@@ -83,6 +89,45 @@ class CartPageState extends State<CartPage> {
     setState(() {
       updateTotal();
     });
+  }
+
+  showCheckoutDialog() {
+    AwesomeDialog(
+      context: this.context,
+      dialogType: DialogType.INFO,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'Confirm Order',
+      desc: "",
+      btnOkOnPress: () {
+        callCheckout();
+      },
+    )..show();
+  }
+
+  callCheckout() async{
+    String url =
+        'https://almightysnk.com/rest/ordercontroller/createOrder';
+      globals.order.orderStatus = "Order Placed";
+      globals.order.tmpOrderId = "9952515251202012291917";
+      Contact contact = Contact();
+      contact.authKey = "-1689287759";
+      contact.contactId = 48;
+      globals.order.contact = contact;
+      Map orderJson = globals.order.toJson();
+
+  }
+
+  Future<String> apiRequest(String url, Map orderJson) async {
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode(orderJson)));
+    HttpClientResponse response = await request.close();
+    // todo - you should check the response.statusCode
+    String reply = await response.transform(utf8.decoder).join();
+    httpClient.close();
+    print(reply);
+    return reply;
   }
 
   void updateTotal(){
