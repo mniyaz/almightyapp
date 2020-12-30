@@ -1,3 +1,4 @@
+import 'package:almighty/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,7 +45,6 @@ class HomePageState extends State<HomePage> {
     return new Scaffold(
       appBar: new AppBar(
           centerTitle: false,
-
           title: new Text("Almighty e-shop"),
           automaticallyImplyLeading: false,
         actions: <Widget>[
@@ -88,19 +88,9 @@ class HomePageState extends State<HomePage> {
                 ),
 
           ),
-      PopupMenuButton<String>(
-        onSelected: handleClick,
-        itemBuilder: (BuildContext context) {
-          return {'Logout', 'profile'}.map((String choice) {
-            return PopupMenuItem<String>(
-              value: choice,
-              child: Text(choice),
-            );
-          }).toList();
-        },
-      ),
       ],
       ),
+      drawer: navigationDrawer(),
       body: SafeArea(
           child: new Column(
         children: <Widget>[
@@ -179,14 +169,7 @@ class HomePageState extends State<HomePage> {
       globals.order.GrandTotal = total.toString();
     });
   }
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
-        break;
-      case 'Settings':
-        break;
-    }
-  }
+
   onSearchTextChanged(String text) async {
 
     text = text.toLowerCase();

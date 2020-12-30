@@ -47,19 +47,6 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
         centerTitle: false,
         title: new Text("Almighty e-shop"),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context) {
-              return {'Logout', 'profile'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
       ),
       body: Column(
     children: <Widget>[
@@ -120,15 +107,6 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
     setState(() {
       globals.cartItems = List.from(globals.cartItems)..removeAt(index);
     });
-  }
-
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
-        break;
-      case 'Settings':
-        break;
-    }
   }
 
 }

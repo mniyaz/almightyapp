@@ -436,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  reactive_forms:
+    dependency: "direct main"
+    description:
+      name: reactive_forms
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.6.3"
   rflutter_alert:
     dependency: "direct main"
     description:
@@ -457,6 +464,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.3"
   shelf:
     dependency: transitive
     description:
@@ -611,3 +625,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.0 <2.11.0"
+  flutter: ">=1.17.0 <2.0.0"

@@ -1,8 +1,8 @@
+import 'package:almighty/pages/login.dart';
+import 'package:almighty/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-
-import './widgets/tabs_page.dart';
-
+import 'package:almighty/routes/page_route.dart';
 void main() {
   runApp(MyApp());
 }
@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Almighty app'),
+      routes:  {
+        pageRoutes.profile: (context) => SignupPage(),
+        pageRoutes.login: (context) => LoginPage(),
+      },
     );
   }
 }
@@ -63,8 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: new SplashScreen(
-        seconds: 3,
-        navigateAfterSeconds: new TabsPage(),
+        seconds: 1,
+        navigateAfterSeconds: new LoginPage(),
         title: new Text('Welcome To Almighty Enterprises',
           style: new TextStyle(
               fontSize: 20.0

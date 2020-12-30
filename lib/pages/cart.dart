@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/models/order_model.dart';
+import 'package:almighty/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -28,19 +29,6 @@ class CartPageState extends State<CartPage> {
 
         title: new Text("Almighty e-shop"),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context) {
-              return {'Logout', 'profile'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ],
       ),
       body: _loading ? bodyProgress : InkWell(
     onTap: () {
@@ -250,13 +238,4 @@ class CartPageState extends State<CartPage> {
     ),
   );
 
-
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
-        break;
-      case 'Settings':
-        break;
-    }
-  }
 }
