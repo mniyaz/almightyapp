@@ -10,11 +10,9 @@ import 'package:almighty/services/local_data_service.dart';
 import 'dart:convert';
 
 class HomePage extends StatefulWidget {
-
   @override
   HomePageState createState() => HomePageState();
 }
-
 
 class HomePageState extends State<HomePage> {
   TextEditingController controller = new TextEditingController();
@@ -22,22 +20,22 @@ class HomePageState extends State<HomePage> {
   List<Product> productListFromApi = List<Product>();
   List<Product> searchResult;
   Future<Null> getProductList() async {
-    final mobileNumber = await LocalService.getMobile(globals.CONTACT_KEY);
-    final response = await http.get("https://almightysnk.com/rest/productcontroller/getlist/"+mobileNumber);
+    final String mobileNumber =
+        await LocalService.getMobile(globals.CONTACT_KEY);
+    final response = await http.get(
+        "https://almightysnk.com/rest/productcontroller/getlist/" +
+            mobileNumber);
     final responseJson = json.decode(response.body);
-    productListFromApi = (responseJson as List)
-        .map((i) => Product.fromJson(i))
-        .toList();
+    productListFromApi =
+        (responseJson as List).map((i) => Product.fromJson(i)).toList();
     setState(() {
-      if(productList == null)
-        productList = List<Product>();
+      if (productList == null) productList = List<Product>();
       productList.addAll(productListFromApi);
     });
-
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getProductList();
   }
@@ -46,98 +44,93 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-          centerTitle: false,
-          title: new Text("Almighty e-shop"),
-          automaticallyImplyLeading: false,
+        centerTitle: false,
+        title: new Text("Almighty e-shop"),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
-           new Container(
-              height: 150.0,
-              width: 30.0,
-              child: new Stack(
-
-                  children: <Widget>[
-                    new IconButton(icon: new Icon(Icons.shopping_cart,
-                      color: Colors.white,),
-                      onPressed: null,
-                    ),
-                    globals.cartItems == null || globals.cartItems.length ==0 ? new Container() :
-                    new Positioned(
-
-                        child: new Stack(
-                          children: <Widget>[
-                            new Icon(
-                                Icons.brightness_1,
-                                size: 20.0, color: Colors.green[800]),
-                            new Positioned(
-                                top: 4.0,
-                                right: 6.0,
-                                child: new Center(
-                                  child: new Text(
-                                    globals.cartItems.length.toString(),
-                                    style: new TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  ),
-                                )),
-
-
-                          ],
-                        )),
-
-                  ],
+          new Container(
+            height: 150.0,
+            width: 30.0,
+            child: new Stack(
+              children: <Widget>[
+                new IconButton(
+                  icon: new Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  onPressed: null,
                 ),
-
-          ),
-      ],
-      ),
-      drawer: navigationDrawer(),
-      body: SafeArea(
-          child: new Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
-                filterSearchResults(value);
-              },
-              controller: controller,
-              decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+                globals.cartItems == null || globals.cartItems.length == 0
+                    ? new Container()
+                    : new Positioned(
+                        child: new Stack(
+                        children: <Widget>[
+                          new Icon(Icons.brightness_1,
+                              size: 20.0, color: Colors.green[800]),
+                          new Positioned(
+                              top: 4.0,
+                              child: new Center(
+                                child: new Text(
+                                  globals.cartItems.length.toString(),
+                                  style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11.0,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              )),
+                        ],
+                      )),
+              ],
             ),
-          ),
-          new Expanded(
-            child:
-                 productList != null && productList.length > 0
-                ?  RefreshIndicator(
-              child:new ListView.builder(
-                  shrinkWrap: true,
-                itemCount: productList.length,
-              itemBuilder: (context, index) {
-                final item = productList[index];
-                return ProductCard(key: ObjectKey(item), product: productList[index], onAdd: () => updateCart(index));
-
-              }
-    ),
-
-
-              onRefresh: getProductList,)
-                : Center(child: Column( children: <Widget> [
-                  Text("No data found for selected Filter"),
-                   RaisedButton(
-                        child: Text("Refresh"),
-                       onPressed: (){
-                     getProductList();
-                   })
-                 ])),
           ),
         ],
       ),
+      drawer: navigationDrawer(),
+      body: SafeArea(
+        child: new Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  filterSearchResults(value);
+                },
+                controller: controller,
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
+            new Expanded(
+              child: productList != null && productList.length > 0
+                  ? RefreshIndicator(
+                      child: new ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: productList.length,
+                          itemBuilder: (context, index) {
+                            final item = productList[index];
+                            return ProductCard(
+                                key: ObjectKey(item),
+                                product: productList[index],
+                                onAdd: () => updateCart(index));
+                          }),
+                      onRefresh: getProductList,
+                    )
+                  : Center(
+                      child: Column(children: <Widget>[
+                      Text("No data found for selected Filter"),
+                      RaisedButton(
+                          child: Text("Refresh"),
+                          onPressed: () {
+                            getProductList();
+                          })
+                    ])),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -145,10 +138,10 @@ class HomePageState extends State<HomePage> {
   void filterSearchResults(String query) {
     List<Product> dummySearchList = List<Product>();
     dummySearchList.addAll(productListFromApi);
-    if(query.isNotEmpty) {
+    if (query.isNotEmpty) {
       List<Product> dummyListData = List<Product>();
       dummySearchList.forEach((item) {
-        if(item.itemName.toLowerCase().contains(query.toLowerCase())) {
+        if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
@@ -164,19 +157,19 @@ class HomePageState extends State<HomePage> {
       });
     }
   }
-  void updateCart(index){
+
+  void updateCart(index) {
     setState(() {
-      int total = globals.cartItems.fold(0, (sum, item) => sum + int.parse(item.rowTotal));
+      int total = globals.cartItems
+          .fold(0, (sum, item) => sum + int.parse(item.rowTotal));
       globals.order.totalPriceBeforeTax = total.toString();
       globals.order.GrandTotal = total.toString();
     });
   }
 
   onSearchTextChanged(String text) async {
-
     text = text.toLowerCase();
-    if(searchResult != null)
-    searchResult.clear();
+    if (searchResult != null) searchResult.clear();
     if (text.isEmpty) {
       setState(() {});
       return;
@@ -184,17 +177,13 @@ class HomePageState extends State<HomePage> {
 
     productList.forEach((product) {
       if (product.itemName.toLowerCase().contains(text)) {
-        if(searchResult == null)
-        searchResult = List();
+        if (searchResult == null) searchResult = List();
         searchResult.add(product);
       }
 
-      setState(() {
-
-      });
+      setState(() {});
     });
 
     setState(() {});
   }
 }
-

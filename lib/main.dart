@@ -3,6 +3,7 @@ import 'package:almighty/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:almighty/routes/page_route.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Almighty app'),
-      routes:  {
+      routes: {
         pageRoutes.profile: (context) => SignupPage(),
         pageRoutes.login: (context) => LoginPage(),
       },
@@ -57,9 +58,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -69,16 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new SplashScreen(
         seconds: 1,
         navigateAfterSeconds: new LoginPage(),
-        title: new Text('Welcome To Almighty Enterprises',
-          style: new TextStyle(
-              fontSize: 20.0
-          ),),
+        title: new Text(
+          'Welcome To Almighty Enterprises',
+          style: new TextStyle(fontSize: 20.0),
+        ),
         useLoader: true,
         image: new Image.asset("assets/images/AlmightyLogo.png"),
         backgroundColor: Colors.white,
         photoSize: 100.0,
-    ),
+      ),
     );
   }
-
 }
