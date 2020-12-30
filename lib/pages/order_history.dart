@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import 'package:almighty/globals.dart' as globals;
+import 'package:almighty/services/local_data_service.dart';
 
 import 'dart:convert';
 
@@ -21,8 +22,10 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
   DateTime selectedDate;
 
   Future<Null> getOrderList(String month,String year) async {
+    final mobile = await LocalService.getMobile(globals.CONTACT_KEY);
+    final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
     final response = await http.get(
-        "https://almightysnk.com/rest/ordercontroller/orderHistory/"+month+"/demo/1689321212");
+        "https://almightysnk.com/rest/ordercontroller/orderHistory/"+month+"/"+mobile+"/"+authKey);
 
     final responseJson = json.decode(response.body);
     setState(() {

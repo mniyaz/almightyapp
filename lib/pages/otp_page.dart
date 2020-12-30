@@ -1,6 +1,6 @@
 import 'package:almighty/pages/forgot_password.dart';
+import 'package:almighty/pages/login.dart';
 import 'package:flutter/material.dart';
-import 'package:almighty/widgets/tabs_page.dart';
 
 class OtpPage extends StatefulWidget {
   @override
@@ -92,7 +92,7 @@ class _OtpPageState extends State<OtpPage> {
               child: FlatButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => TabsPage()));
+                      context, MaterialPageRoute(builder: (_) => LoginPage()));
                 },
                 child: Text(
                   'Ok',

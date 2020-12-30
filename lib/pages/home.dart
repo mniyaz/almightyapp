@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 import '../cards/product_card.dart';
 import 'package:almighty/globals.dart' as globals;
+import 'package:almighty/services/local_data_service.dart';
 
 import 'dart:convert';
 
@@ -21,7 +22,8 @@ class HomePageState extends State<HomePage> {
   List<Product> productListFromApi = List<Product>();
   List<Product> searchResult;
   Future<Null> getProductList() async {
-    final response = await http.get("https://almightysnk.com/rest/productcontroller/getlist/9952515251");
+    final mobileNumber = await LocalService.getMobile(globals.CONTACT_KEY);
+    final response = await http.get("https://almightysnk.com/rest/productcontroller/getlist/"+mobileNumber);
     final responseJson = json.decode(response.body);
     productListFromApi = (responseJson as List)
         .map((i) => Product.fromJson(i))
