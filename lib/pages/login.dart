@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _showProgress = false;
       });
-      Navigator.push(context, MaterialPageRoute(builder: (_) => TabsPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TabsPage()));
     } else if (responseJson["allow"] == "USER NOT ACTIVE") {
       setState(() {
         _showProgress = false;

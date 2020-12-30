@@ -31,7 +31,6 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
     setState(() {
       orderListFromApi =
           (responseJson as List).map((i) => Order.fromJson(i)).toList();
-      print(responseJson);
       orderList = orderListFromApi;
     });
   }

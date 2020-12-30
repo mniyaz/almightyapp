@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 
 Widget createDrawerHeader() {
   return DrawerHeader(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image:  AssetImage('images/bg_header.jpeg'))),
-      child: Stack(children: <Widget>[
-        Positioned(
-            bottom: 12.0,
-            left: 16.0,
-            child: Text("Welcome to Flutter",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500))),
-      ]));
+
+
+    child:Center(
+      child: Column(
+      children : <Widget> [
+        Container(
+          width: 100,
+          height: 100,
+          /*decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50.0)),*/
+          child: Image.asset('assets/images/AlmightyLogo.png')),
+      Padding(
+          padding: const EdgeInsets.only(
+              left: 15.0, right: 15.0, top: 15, bottom: 0),
+          //padding: EdgeInsets.symmetric(horizontal: 15),
+          child:Text("Almigty e-Shop"),
+      ),
+
+    ]),)
+      );
 }

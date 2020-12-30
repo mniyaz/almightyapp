@@ -6,6 +6,7 @@ import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/models/order_model.dart';
 import 'package:almighty/pages/login.dart';
+import 'package:almighty/services/local_data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -86,9 +87,10 @@ class CartPageState extends State<CartPage> {
   }
 
   Future<Null> checkIfOrderCreated(String tmpOrderId) async {
-    final response = await http.get("https://almightysnk.com/rest/ordercontroller/checkIfOrderCreated/"+tmpOrderId+"/9952515251/-1689280669");
+    final mobile = await LocalService.getMobile(globals.CONTACT_KEY);
+    final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
+    final response = await http.get("https://almightysnk.com/rest/ordercontroller/checkIfOrderCreated/"+tmpOrderId+"/"+mobile+"/"+authKey);
     final responseJson = json.decode(response.body);
-    print(responseJson);
     isStopped = responseJson["ordersuccess"] as bool;
   }
 
@@ -110,13 +112,13 @@ class CartPageState extends State<CartPage> {
     String url =
         'https://almightysnk.com/rest/ordercontroller/createOrder';
       globals.order.orderStatus = "Order Placed";
-      globals.order.tmpOrderId = "9952515251202012292143";
-      Contact contact = Contact();
-      contact.authKey = "-1689280669";
-      contact.contactFirstName = "Vinoth";
-      contact.contactMobile = "9952515251";
-      contact.contactId = 48;
+
+      final Contact contact = await LocalService.getContact(globals.CONTACT_KEY);
+      final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
+      globals.order.tmpOrderId = contact.contactMobile + DateTime.now().millisecondsSinceEpoch.toString();
+      contact.authKey = authKey;
       globals.order.contact = contact;
+
       Map orderJson = globals.order.toJson();
       orderJson.remove("orderId");
     orderJson.remove("CGST");
@@ -148,7 +150,6 @@ class CartPageState extends State<CartPage> {
     // todo - you should check the response.statusCode
     String reply = await response.transform(utf8.decoder).join();
     httpClient.close();
-    print(reply);
     return reply;
   }
 

@@ -46,13 +46,17 @@ class HomePageState extends State<HomePage> {
       appBar: new AppBar(
         centerTitle: false,
         title: new Text("Almighty e-shop"),
-        automaticallyImplyLeading: false,
         actions: <Widget>[
           new Container(
             height: 150.0,
             width: 30.0,
             child: new Stack(
               children: <Widget>[
+            Padding(
+            padding: const EdgeInsets.only(
+                right: 15.0),
+        //padding: EdgeInsets.symmetric(horizontal: 15),
+        child:
                 new IconButton(
                   icon: new Icon(
                     Icons.shopping_cart,
@@ -60,6 +64,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   onPressed: null,
                 ),
+            ),
                 globals.cartItems == null || globals.cartItems.length == 0
                     ? new Container()
                     : new Positioned(
@@ -85,7 +90,6 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: navigationDrawer(),
       body: SafeArea(
         child: new Column(
           children: <Widget>[
@@ -132,6 +136,7 @@ class HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      drawer: navigationDrawer(),
     );
   }
 
