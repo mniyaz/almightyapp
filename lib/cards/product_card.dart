@@ -46,7 +46,7 @@ class ProductCardState extends State<ProductCard> {
             ),
             SpinBox(
               min: 1,
-              max: 1000,
+              max: 10000,
               value: 1,
               showCursor: false,
               onChanged: (value) {

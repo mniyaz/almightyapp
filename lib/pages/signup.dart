@@ -26,11 +26,12 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(body:
        SafeArea(child:
+           Center( child:
        ListView(
        shrinkWrap: true,
        children : [
        Column(children: [Padding(
-           padding: const EdgeInsets.only(top: 10.0),
+           padding: const EdgeInsets.only(top: 0.0),
       child: Center(
         child: Container(
             width: 100,
@@ -171,7 +172,7 @@ class _SignupPageState extends State<SignupPage> {
           ),
         ],
       ),
-    )])])
+    )])]))
       )
     );
   }

@@ -1,8 +1,6 @@
 import 'package:almighty/pages/login.dart';
 import 'package:almighty/pages/otp_page.dart';
-import 'package:almighty/pages/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:almighty/widgets/tabs_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -14,11 +12,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: Center(child:SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: Center(
                 child: Container(
                     width: 150,
@@ -74,7 +72,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
           ],
         ),
-      ),
+      ),)
     );
   }
 }

@@ -20,11 +20,11 @@ class _OtpPageState extends State<OtpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: Center(child:SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: Center(
                 child: Container(
                     width: 150,
@@ -112,7 +112,7 @@ class _OtpPageState extends State<OtpPage> {
             ),
           ],
         ),
-      ),
+      ),)
     );
   }
 }

@@ -27,7 +27,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final form = FormGroup({
-    'phone': FormControl(validators: [Validators.required]),
+    'phone': FormControl(validators: [Validators.required,
+      Validators.number,
+      Validators.minLength(10),
+      Validators.maxLength(10)]),
     'password': FormControl(validators: [Validators.required]),
   });
 
@@ -35,10 +38,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: Center(
+        child: SingleChildScrollView(
         child: Column(children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 60.0),
+            padding: const EdgeInsets.only(top: 0.0),
             child: Center(
               child: Container(
                   width: 150,
@@ -66,6 +70,10 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Phone',
                         hintText:
                             'Enter valid email phone number as 9999999999'),
+                    validationMessages: (control) => {
+                      ValidationMessage.minLength: 'Must me 10 digits',
+
+                    },
                   ),
                 ),
                 Padding(
@@ -147,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ]),
+        ),
       ),
     );
   }
@@ -159,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
             this.form.control('password').value.toString());
     final responseJson = json.decode(response.body);
     if (responseJson["allow"] == "USER AUTHENTICATED") {
-      print("phone save :" + responseJson[globals.AUTH_KEY]);
       LocalService.saveData(globals.AUTH_KEY, responseJson[globals.AUTH_KEY]);
       LocalService.saveData(
           globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);

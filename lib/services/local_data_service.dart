@@ -45,6 +45,5 @@ class LocalService {
     final file = File('${directory.path}/' + fileName + '.txt');
     final text = value;
     await file.writeAsString(text);
-    print('saved');
   }
 }
