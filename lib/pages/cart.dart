@@ -4,8 +4,6 @@ import 'dart:io';
 
 import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
-import 'package:almighty/models/order_model.dart';
-import 'package:almighty/pages/login.dart';
 import 'package:almighty/services/local_data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';

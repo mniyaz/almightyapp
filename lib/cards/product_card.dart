@@ -3,6 +3,7 @@ import 'package:almighty/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../models/product.dart';
@@ -31,12 +32,13 @@ class ProductCardState extends State<ProductCard> {
   @override
   void initState() {
     super.initState();
-    _controller.text = "1"; // Setting the initial value for the field.
+    _controller.text = "0"; // Setting the initial value for the field.
   }
 
   int _currentValue = 1;
 
   _openPopup(context,Product product) {
+    _controller.text = "0";
     Alert(
         context: context,
         title: "Pick your Weight",
@@ -58,6 +60,7 @@ class ProductCardState extends State<ProductCard> {
             ),
             TextField(
                controller: _controller,
+              enabled: false,
               decoration: InputDecoration(
                 icon: Icon(Icons.line_weight),
                 labelText: 'Weight',
@@ -73,7 +76,7 @@ class ProductCardState extends State<ProductCard> {
                       DataCell(
                         Container(
                           child: Text(
-                            "2.5 To 9.99",
+                            "Below 10",
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -81,7 +84,7 @@ class ProductCardState extends State<ProductCard> {
                       DataCell(
                         Container(
                           child: Text(
-                            product.itemPrice,
+                            "\u20B9"+product.itemPrice,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -101,7 +104,7 @@ class ProductCardState extends State<ProductCard> {
                   DataCell(
                     Container(
                       child: Text(
-                        product.itemPrice10To25,
+                        "\u20B9"+product.itemPrice10To25,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -121,7 +124,7 @@ class ProductCardState extends State<ProductCard> {
                   DataCell(
                     Container(
                       child: Text(
-                        product.itemPriceAbove25,
+                        "\u20B9"+product.itemPriceAbove25,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -141,7 +144,7 @@ class ProductCardState extends State<ProductCard> {
                   DataCell(
                     Container(
                       child: Text(
-                        product.itemPriceBag,
+                        "\u20B9"+product.itemPriceBag,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -150,7 +153,7 @@ class ProductCardState extends State<ProductCard> {
               ),
                 ]) : DataTable(columns: [
               DataColumn(label: Text("Price")),
-              DataColumn(label: Text(product.itemPrice)),
+              DataColumn(label: Text("\u20B9"+product.itemPrice)),
             ],rows :[],),
               ],
             ),
@@ -158,44 +161,63 @@ class ProductCardState extends State<ProductCard> {
         buttons: [
           DialogButton(
             onPressed: () {
-              Navigator.pop(context);
+              if(_controller.text != "0") {
+                Navigator.pop(context);
 
-              Items item = new Items();
-              item.productName = product.itemName;
+                Items item = new Items();
+                item.productName = product.itemName;
 
-              item.qty = int.parse(_controller.text);
+                item.qty = int.parse(_controller.text);
 
-              if(product.itemPriceBag != null && product.itemPriceBag != "0") {
-                if (_currentValue < 10) {
+                if (product.itemPriceBag != null &&
+                    product.itemPriceBag != "0") {
+                  if (_currentValue < 10) {
+                    item.price = product.itemPrice;
+                  } else if (_currentValue >= 10 && _currentValue < 25) {
+                    item.price = product.itemPrice10To25;
+                  } else if (_currentValue >= 25 && _currentValue <= 50) {
+                    item.price = product.itemPriceAbove25;
+                  } else if (_currentValue > 50) {
+                    item.price = product.itemPriceBag;
+                  }
+                } else {
                   item.price = product.itemPrice;
-                } else if (_currentValue >=10 && _currentValue < 25) {
-                  item.price = product.itemPrice10To25;
-                }else if (_currentValue >=25 && _currentValue < 50) {
-                  item.price = product.itemPriceAbove25;
-                }else if (_currentValue >50) {
-                  item.price = product.itemPriceBag;
                 }
-              }else{item.price = product.itemPrice;}
 
 
-              item.rowTotal = (int.parse(_controller.text) * double.parse(item.price)).toInt().toString();
+                item.rowTotal =
+                    (int.parse(_controller.text) * double.parse(item.price))
+                        .toInt()
+                        .toString();
 
-              if(globals.cartItems == null) {
-                globals.cartItems = new List();
-              }
-              globals.cartItems.add(item);
+                if (globals.cartItems == null) {
+                  globals.cartItems = new List();
+                }
+                globals.cartItems.add(item);
 
-              if(globals.order == null)
-                globals.order = new Order();
+                if (globals.order == null)
+                  globals.order = new Order();
 
-              globals.order.items = globals.cartItems;
+                globals.order.items = globals.cartItems;
 
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(_controller.text + "KGs of " +product.itemName + " Added to Cart."),
-              ));
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      _controller.text + "KGs of " + product.itemName +
+                          " Added to Cart."),
+                ));
 
                 widget.onAdd();
-
+              }else{
+                Fluttertoast.showToast(
+                    msg: "Select Quantity!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
             } ,
             child: Text(
               "Add to Cart",
@@ -265,7 +287,7 @@ class ProductCardState extends State<ProductCard> {
                         DataCell(
                           Container(
                             child: Text(
-                              product.itemPriceBag != null ? product.itemPriceBag  + " To " + product.itemPrice : product.itemPrice,
+                               product.itemPriceBag != null ? "\u20B9"+product.itemPriceBag  + " Onwards" : "\u20B9"+product.itemPrice,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

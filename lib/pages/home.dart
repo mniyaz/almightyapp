@@ -10,6 +10,7 @@ import 'package:almighty/services/local_data_service.dart';
 import 'dart:convert';
 
 class HomePage extends StatefulWidget {
+  static const String routeName = '/home';
   @override
   HomePageState createState() => HomePageState();
 }
@@ -28,15 +29,17 @@ class HomePageState extends State<HomePage> {
     final responseJson = json.decode(response.body);
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
+    if (productList == null) productList = List<Product>(); else productList.clear();
+    productList.addAll(productListFromApi);
     setState(() {
-      if (productList == null) productList = List<Product>();
-      productList.addAll(productListFromApi);
+
     });
   }
-
+  bool _showProgress = false;
   @override
   void initState() {
     super.initState();
+    _showProgress = false;
     getProductList();
   }
 
@@ -74,6 +77,7 @@ class HomePageState extends State<HomePage> {
                               size: 20.0, color: Colors.green[800]),
                           new Positioned(
                               top: 4.0,
+                              right: 6.0,
                               child: new Center(
                                 child: new Text(
                                   globals.cartItems.length.toString(),
@@ -129,8 +133,15 @@ class HomePageState extends State<HomePage> {
                       RaisedButton(
                           child: Text("Refresh"),
                           onPressed: () {
+                            setState(() {
+                              _showProgress = true;
+                            });
                             getProductList();
-                          })
+                            setState(() {
+                              _showProgress = false;
+                            });
+                          }),
+                        _showProgress ? CircularProgressIndicator() : new Container(),
                     ])),
             ),
           ],

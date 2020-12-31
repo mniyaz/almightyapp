@@ -30,8 +30,10 @@ class _LoginPageState extends State<LoginPage> {
     'phone': FormControl(validators: [Validators.required,
       Validators.number,
       Validators.minLength(10),
-      Validators.maxLength(10)]),
-    'password': FormControl(validators: [Validators.required]),
+      Validators.maxLength(10)],
+      touched: true,),
+    'password': FormControl(validators: [Validators.required],
+      touched: true,),
   });
 
   @override
@@ -181,6 +183,13 @@ class _LoginPageState extends State<LoginPage> {
       });
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("You are not allowed to login!"),
+      ));
+    }else if (responseJson["allow"] == "USER AUTHENTICATION FAILED") {
+      setState(() {
+        _showProgress = false;
+      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Wrong username/password!"),
       ));
     } else {
       setState(() {

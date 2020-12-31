@@ -19,7 +19,10 @@ class Contact extends ChangeNotifier{
   Contact(
       {this.contactId,
         this.contactFirstName,
+        this.contactSecondName,
+        this.contactEmail,
         this.contactMobile,
+        this.contactAddress,
         this.authKey,
         this.contactActive,
         this.contactGroup});

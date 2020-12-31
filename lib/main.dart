@@ -1,5 +1,6 @@
+import 'package:almighty/pages/home.dart';
 import 'package:almighty/pages/login.dart';
-import 'package:almighty/pages/signup.dart';
+import 'package:almighty/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:almighty/routes/page_route.dart';
@@ -32,8 +33,9 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Almighty app'),
       routes: {
-        pageRoutes.profile: (context) => SignupPage(),
+        pageRoutes.profile: (context) => ProfilePage(),
         pageRoutes.login: (context) => LoginPage(),
+        pageRoutes.home: (context) => HomePage(),
       },
     );
   }

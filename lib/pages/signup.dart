@@ -1,25 +1,78 @@
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/pages/login.dart';
+import 'package:almighty/services/local_data_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:almighty/routes/page_route.dart';
+import 'package:almighty/globals.dart' as globals;
 
 class _SignupPageState extends State<SignupPage> {
+  bool _showProgress = false;
 
-  final form = FormGroup({
-    'contactFirstName': FormControl<String>(validators: [Validators.required]),
-    'contactSecondName': FormControl<String>(validators: [Validators.required]),
+  @override
+  void initState() {
+    super.initState();
+    _showProgress = false;
+  }
+   var form = FormGroup({
+    'contactFirstName': FormControl<String>(validators: [Validators.required],touched: true,),
+    'contactSecondName': FormControl<String>(validators: [Validators.required],touched: true,),
     'contactMobile': FormControl<String>(validators: [Validators.required,
       Validators.number,
       Validators.minLength(10),
-      Validators.maxLength(10)]),
+      Validators.maxLength(10)],touched: true,),
     'contactEmail': FormControl<String>(value: ''),
     'contactAddress': FormControl<String>(value: ''),
-    'contactPassword': FormControl<String>(validators: [Validators.required]),
+    'contactPassword': FormControl<String>(validators: [Validators.required],touched: true,),
     'contactPasswordConfirm': FormControl<String>(validators: [Validators.required]),
   },validators: [Validators.mustMatch('contactPassword', 'contactPasswordConfirm'),]);
 
-  void signUp() {
-    final credentials = this.form.value;
 
+  Future<String> signUp() async {
+    setState(() {
+      _showProgress = true;
+    });
+
+    this.form.value.removeWhere((key, value) => key == "contactPasswordConfirm");
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse("https://almightysnk.com/rest/login/signup"));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode(this.form.value)));
+    HttpClientResponse response = await request.close();
+    if(response.statusCode == 200) {
+      String reply = await response.transform(utf8.decoder).join();
+      setState(() {
+        _showProgress = false;
+      });
+      Fluttertoast.showToast(
+          msg: "Singed Up Successfully! Call Almighty to give you access.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }else  {
+      setState(() {
+        _showProgress = false;
+      });
+      Fluttertoast.showToast(
+          msg: "Something went wrong! Try again later.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+    httpClient.close();
   }
 
   @override
@@ -107,7 +160,7 @@ class _SignupPageState extends State<SignupPage> {
                   labelText: 'Address(Optional)',)
             ),
           ),
-      Padding(
+          Padding(
         //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15, bottom: 0),
@@ -160,10 +213,11 @@ class _SignupPageState extends State<SignupPage> {
 
             },
           ),),
+          _showProgress ? CircularProgressIndicator() : new Container(),
           FlatButton(
             onPressed: (){
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (_) => LoginPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => LoginPage()));
             },
             child: Text(
               'Go Back',
@@ -176,6 +230,12 @@ class _SignupPageState extends State<SignupPage> {
       )
     );
   }
+
+
+  @override
+  void dipose(){
+    super.dispose();
+  }
 }
 
 class SignupPage extends StatefulWidget with ChangeNotifier{
@@ -183,4 +243,3 @@ class SignupPage extends StatefulWidget with ChangeNotifier{
   @override
   _SignupPageState createState() => _SignupPageState();
 }
-
