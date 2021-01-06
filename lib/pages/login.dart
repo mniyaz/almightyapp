@@ -27,13 +27,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   final form = FormGroup({
-    'phone': FormControl(validators: [Validators.required,
-      Validators.number,
-      Validators.minLength(10),
-      Validators.maxLength(10)],
-      touched: true,),
-    'password': FormControl(validators: [Validators.required],
-      touched: true,),
+    'phone': FormControl(
+      validators: [
+        Validators.required,
+        Validators.number,
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ],
+      touched: true,
+    ),
+    'password': FormControl(
+      validators: [Validators.required],
+      touched: true,
+    ),
   });
 
   @override
@@ -42,121 +48,133 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
-        child: Column(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 0.0),
-            child: Center(
-              child: Container(
-                  width: 150,
-                  height: 150,
-                  /*decoration: BoxDecoration(
+          child: Container(
+            width: 400,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Center(
+                    child: Container(
+                        width: 150,
+                        height: 150,
+                        /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                  child: Image.asset('assets/images/AlmightyLogo.png')),
-            ),
-          ),
-          new Container(
-            height: 50,
-          ),
-          ReactiveForm(
-            formGroup: this.form,
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: ReactiveTextField(
-                    formControlName: 'phone',
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Phone',
-                        hintText:
-                            'Enter valid email phone number as 9999999999'),
-                    validationMessages: (control) => {
-                      ValidationMessage.minLength: 'Must me 10 digits',
-
-                    },
+                        child: Image.asset('assets/images/AlmightyLogo.png')),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15.0, top: 15, bottom: 0),
-                  //padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: ReactiveTextField(
-                    formControlName: 'password',
-                    obscureText: !_passwordVisible,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'Enter secure password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
+                new Container(
+                  height: 50,
+                ),
+                ReactiveForm(
+                  formGroup: this.form,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: ReactiveTextField(
+                          formControlName: 'phone',
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Phone',
+                              hintText:
+                                  'Enter valid email phone number as 9999999999'),
+                          validationMessages: (control) => {
+                            ValidationMessage.minLength: 'Must me 10 digits',
+                          },
                         ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        },
                       ),
-                    ),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ForgotPasswordPage()));
-                  },
-                  child: Text(
-                    'Forgot Password',
-                    style: TextStyle(color: Colors.blue, fontSize: 15),
-                  ),
-                ),
-                Container(
-                    height: 50,
-                    width: 250,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: ReactiveFormConsumer(
-                      builder: (context, form, child) {
-                        return FlatButton(
-                          onPressed: form.valid
-                              ? () {
-                                  setState(() {
-                                    _showProgress = true;
-                                  });
-                                  signIn(context);
-                                }
-                              : null,
-                          child: Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 15.0, right: 15.0, top: 15, bottom: 0),
+                        //padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: ReactiveTextField(
+                          formControlName: 'password',
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                            hintText: 'Enter secure password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
                           ),
-                        );
-                      },
-                    )),
-                _showProgress ? CircularProgressIndicator() : new Container(),
-                SizedBox(
-                  height: 170,
+                        ),
+                      ),
+                      FlatButton(
+                        hoverColor: Colors.transparent,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ForgotPasswordPage()),
+                          );
+                        },
+                        child: Text(
+                          'Forgot Password',
+                          style: TextStyle(color: Colors.blue, fontSize: 15),
+                        ),
+                      ),
+                      Container(
+                          height: 50,
+                          width: 250,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: ReactiveFormConsumer(
+                            builder: (context, form, child) {
+                              return FlatButton(
+                                onPressed: form.valid
+                                    ? () {
+                                        setState(() {
+                                          _showProgress = true;
+                                        });
+                                        signIn(context);
+                                      }
+                                    : null,
+                                child: Text(
+                                  'Login'.toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                              );
+                            },
+                          )),
+                      _showProgress
+                          ? CircularProgressIndicator()
+                          : new Container(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => SignupPage()));
+                        },
+                        child: Text('New User? Create Account'),
+                      ),
+                    ],
+                  ),
                 ),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => SignupPage()));
-                    },
-                    child: Text('New User? Create Account')),
               ],
             ),
           ),
-        ]),
         ),
       ),
     );
@@ -176,7 +194,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _showProgress = false;
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TabsPage()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => TabsPage()));
     } else if (responseJson["allow"] == "USER NOT ACTIVE") {
       setState(() {
         _showProgress = false;
@@ -184,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("You are not allowed to login!"),
       ));
-    }else if (responseJson["allow"] == "USER AUTHENTICATION FAILED") {
+    } else if (responseJson["allow"] == "USER AUTHENTICATION FAILED") {
       setState(() {
         _showProgress = false;
       });

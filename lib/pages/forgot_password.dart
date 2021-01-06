@@ -17,90 +17,99 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   bool _showProgress = false;
   final form = FormGroup({
-    'phone': FormControl(validators: [Validators.required,
-      Validators.number,
-      Validators.minLength(10),
-      Validators.maxLength(10)],
-      touched: true,),
+    'phone': FormControl(
+      validators: [
+        Validators.required,
+        Validators.number,
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ],
+      touched: true,
+    ),
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(child:SingleChildScrollView(
-        child:  ReactiveForm(
-        formGroup: this.form,
-        child:Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 0.0),
-              child: Center(
-                child: Container(
-                    width: 150,
-                    height: 150,
-                    /*decoration: BoxDecoration(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
+              child: ReactiveForm(
+            formGroup: this.form,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Center(
+                    child: Container(
+                        width: 150,
+                        height: 150,
+                        /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Image.asset('assets/images/AlmightyLogo.png')),
-              ),
-            ),
-            new Container(
-              height: 50,
-            ),
-            Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: ReactiveTextField(
-                formControlName: 'phone',
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Phone',
-                    hintText: 'Enter valid email phone number as 9999999999'),
-              ),
-            ),
-      Padding(
-        //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-        padding: const EdgeInsets.only(
-            left: 15.0, right: 15.0, top: 15, bottom: 0),
-        child:Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child:  ReactiveFormConsumer(
-    builder: (context, form, child) {
-    return FlatButton(
-                onPressed: form.valid
-                    ? () {
-                  setState(() {
-                    _showProgress = true;
-                  });
-                  getOtp(context);
-                }
-                    : null,
-                child: Text(
-                  'Get OTP',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                        child: Image.asset('assets/images/AlmightyLogo.png')),
+                  ),
                 ),
-              );
-            }),
-            ),),
-            _showProgress ? CircularProgressIndicator() : new Container(),
-            FlatButton(
-              onPressed: (){
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => LoginPage()));
-              },
-              child: Text(
-                'Go Back',
-                style: TextStyle(color: Colors.blue, fontSize: 15),
-              ),
+                new Container(
+                  height: 50,
+                ),
+                Padding(
+                  //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: ReactiveTextField(
+                    formControlName: 'phone',
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Phone',
+                        hintText:
+                            'Enter valid email phone number as 9999999999'),
+                  ),
+                ),
+                Padding(
+                  //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  child: Container(
+                    height: 50,
+                    width: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20)),
+                    child:
+                        ReactiveFormConsumer(builder: (context, form, child) {
+                      return FlatButton(
+                        onPressed: form.valid
+                            ? () {
+                                setState(() {
+                                  _showProgress = true;
+                                });
+                                getOtp(context);
+                              }
+                            : null,
+                        child: Text(
+                          'Get OTP',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                _showProgress ? CircularProgressIndicator() : new Container(),
+                FlatButton(
+                  hoverColor: Colors.transparent,
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => LoginPage()));
+                  },
+                  child: Text(
+                    'Go Back',
+                    style: TextStyle(color: Colors.blue, fontSize: 15),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),)
-      ),)
-    );
+          )),
+        ));
   }
 
   Future<Null> getOtp(context) async {
@@ -113,8 +122,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       setState(() {
         _showProgress = false;
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OtpPage()));
-    } else  {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => OtpPage()));
+    } else {
       setState(() {
         _showProgress = false;
       });
@@ -125,8 +135,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           timeInSecForIosWeb: 3,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
     }
   }
 }
