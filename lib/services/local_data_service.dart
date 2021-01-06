@@ -40,7 +40,7 @@ class LocalService {
     }
   }
 
-  static void saveData(String fileName, String value) async {
+  static Future<Null> saveData(String fileName, String value) async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/' + fileName + '.txt');
     final text = value;

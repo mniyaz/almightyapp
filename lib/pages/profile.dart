@@ -47,24 +47,23 @@ class _ProfilePageState extends State<ProfilePage> {
     if(response.statusCode == 200) {
       final responseJson = json.decode(response.body);
       this.contact = Contact.fromJson(json.decode(responseJson[globals.CONTACT_KEY]));
-      LocalService.saveData(
-          globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
+      LocalService.saveData(globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
       setState(() {
         this.form
             .control("contactFirstName")
-            .value = contact.contactFirstName;
+            .value = this.contact.contactFirstName;
         this.form
             .control("contactSecondName")
-            .value = contact.contactSecondName;
+            .value = this.contact.contactSecondName;
         this.form
             .control("contactMobile")
-            .value = contact.contactMobile;
+            .value = this.contact.contactMobile;
         this.form
             .control("contactEmail")
-            .value = contact.contactEmail;
+            .value = this.contact.contactEmail;
         this.form
             .control("contactAddress")
-            .value = contact.contactAddress;
+            .value = this.contact.contactAddress;
       });
     }else{
       Fluttertoast.showToast(
@@ -104,7 +103,6 @@ class _ProfilePageState extends State<ProfilePage> {
     String reply = await response.transform(utf8.decoder).join();
 
     if(response.statusCode == 200) {
-      print(json.decode(reply));
       Fluttertoast.showToast(
           msg: "Updated Successfully!",
           toastLength: Toast.LENGTH_LONG,

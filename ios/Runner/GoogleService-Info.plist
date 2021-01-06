@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>188005409347-ovk9aoja7jp4tn9ej3jfun67qcbu0osb.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.188005409347-ovk9aoja7jp4tn9ej3jfun67qcbu0osb</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>188005409347-6pcc8kbjntfjk30443r2o9ccho4v62kb.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCO-n9QzzvF8XFY9P2oKpZrc1N8KDdg6sw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>188005409347</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.almightysnk.almightyapp</string>
+	<key>PROJECT_ID</key>
+	<string>almighty2-32d32</string>
+	<key>STORAGE_BUCKET</key>
+	<string>almighty2-32d32.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:188005409347:ios:32b4f2df8ed5c246b2eaf6</string>
+	<key>DATABASE_URL</key>
+	<string>https://almighty2-32d32.firebaseio.com</string>
+</dict>
+</plist>

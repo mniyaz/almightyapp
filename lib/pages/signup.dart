@@ -2,14 +2,11 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/pages/login.dart';
-import 'package:almighty/services/local_data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:almighty/routes/page_route.dart';
-import 'package:almighty/globals.dart' as globals;
+import 'package:http/http.dart' as http;
 
 class _SignupPageState extends State<SignupPage> {
   bool _showProgress = false;
@@ -37,28 +34,16 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       _showProgress = true;
     });
-
-    this.form.value.removeWhere((key, value) => key == "contactPasswordConfirm");
-    HttpClient httpClient = new HttpClient();
-    HttpClientRequest request = await httpClient.postUrl(Uri.parse("https://almightysnk.com/rest/login/signup"));
-    request.headers.set('content-type', 'application/json');
-    request.add(utf8.encode(json.encode(this.form.value)));
-    HttpClientResponse response = await request.close();
-    if(response.statusCode == 200) {
-      String reply = await response.transform(utf8.decoder).join();
-      setState(() {
-        _showProgress = false;
-      });
-      Fluttertoast.showToast(
-          msg: "Singed Up Successfully! Call Almighty to give you access.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }else  {
+    bool profileExists = true;
+    print(this.form.control("contactMobile").value.toString());
+    final checkResponse = await http.get(
+        "https://almightysnk.com/rest/login/checkifmobileexists/" +
+            this.form.control("contactMobile").value.toString());
+    if(checkResponse.statusCode == 200) {
+      final responseJson = json.decode(checkResponse.body);
+      print(responseJson["exists"]);
+      profileExists = responseJson["exists"];
+    }else{
       setState(() {
         _showProgress = false;
       });
@@ -72,7 +57,72 @@ class _SignupPageState extends State<SignupPage> {
           fontSize: 16.0
       );
     }
-    httpClient.close();
+    if(!profileExists) {
+      this.form.value.removeWhere((key, value) =>
+      key == "contactPasswordConfirm");
+      HttpClient httpClient = new HttpClient();
+      HttpClientRequest request = await httpClient.postUrl(
+          Uri.parse("https://almightysnk.com/rest/login/signup"));
+      request.headers.set('content-type', 'application/json');
+      request.add(utf8.encode(json.encode(this.form.value)));
+      HttpClientResponse response = await request.close();
+      if (response.statusCode == 200) {
+        String reply = await response.transform(utf8.decoder).join();
+        final responseJson = jsonDecode(reply);
+        setState(() {
+          _showProgress = false;
+        });
+        if(responseJson["signupsuccess:"]) {
+          Fluttertoast.showToast(
+              msg: "Singed Up Successfully! Call Almighty to give you access.",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 3,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
+        else{
+          Fluttertoast.showToast(
+              msg: "Sing Up Failed! Try again later.",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 3,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
+      } else {
+        setState(() {
+          _showProgress = false;
+        });
+        Fluttertoast.showToast(
+            msg: "Something went wrong! Try again later.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+      httpClient.close();
+    }else{
+      setState(() {
+        _showProgress = false;
+      });
+      Fluttertoast.showToast(
+          msg: "Profile already exists, try forgot password.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.orange,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
   }
 
   @override
