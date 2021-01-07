@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "188005409347",
+    "firebase_url": "https://almighty2-32d32.firebaseio.com",
+    "project_id": "almighty2-32d32",
+    "storage_bucket": "almighty2-32d32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188005409347:android:7c0eb093e5513b8e",
+        "android_client_info": {
+          "package_name": "com.almightysnk.almighty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188005409347-6pcc8kbjntfjk30443r2o9ccho4v62kb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.almightysnk.almighty",
+            "certificate_hash": "12a5b65e0b214aa253e1359fb22829bf8c0001a9"
+          }
+        },
+        {
+          "client_id": "188005409347-pmsugig692k1iuajsg1cuhi81s9g78ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi3967iGSN8tsmv8idTThRCkIgil26jrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188005409347-pmsugig692k1iuajsg1cuhi81s9g78ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
