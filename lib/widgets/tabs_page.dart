@@ -10,7 +10,7 @@ class _TabsPageState extends State<TabsPage> {
   int _currentIndex = 0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -25,13 +25,14 @@ class _TabsPageState extends State<TabsPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        fixedColor: Colors.blue,
         currentIndex: _currentIndex,
         onTap: (int index) => setState(() => _currentIndex = index),
         items: <BottomNavigationBarItem>[
           for (final tabItem in TabNavigationItem.items)
             BottomNavigationBarItem(
               icon: tabItem.icon,
-                title: SizedBox.shrink(),
+              title: SizedBox.shrink(),
             ),
         ],
       ),

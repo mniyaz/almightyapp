@@ -10,7 +10,6 @@ import '../models/product.dart';
 
 import '../globals.dart' as globals;
 
-
 class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback onAdd;
@@ -37,14 +36,22 @@ class ProductCardState extends State<ProductCard> {
 
   int _currentValue = 1;
 
-  _openPopup(context,Product product) {
+  _openPopup(context, Product product) {
     _controller.text = "0";
     Alert(
         context: context,
         title: "Pick your Weight",
         content: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(product.itemName
+            Container(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Text(
+                product.itemName,
+                style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.left,
+              ),
             ),
             SpinBox(
               min: 1,
@@ -59,109 +66,120 @@ class ProductCardState extends State<ProductCard> {
               },
             ),
             TextField(
-               controller: _controller,
+              controller: _controller,
               enabled: false,
               decoration: InputDecoration(
-                icon: Icon(Icons.line_weight),
+                //icon: Icon(Icons.line_weight),
                 labelText: 'Weight',
               ),
             ),
-
-            product.itemPriceBag != null && product.itemPriceBag != "0" ? DataTable(columns: [
-                  DataColumn(label: Text("Weight(KGs)")),
-                DataColumn(label: Text("Price")),
-                    ], rows: [
-                  DataRow(
-                    cells: [
-                      DataCell(
-                        Container(
-                          child: Text(
-                            "Below 10",
-                            overflow: TextOverflow.ellipsis,
-                          ),
+            product.itemPriceBag != null && product.itemPriceBag != "0"
+                ? Container(
+                    child: DataTable(
+                      columns: [
+                        DataColumn(label: Text("Weight(KGs)")),
+                        DataColumn(label: Text("Price")),
+                      ],
+                      rows: [
+                        DataRow(
+                          cells: [
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "Below 10",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "\u20B9" + product.itemPrice,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      DataCell(
-                        Container(
-                          child: Text(
-                            "\u20B9"+product.itemPrice,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        DataRow(
+                          cells: [
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "10 To 25",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "\u20B9" + product.itemPrice10To25,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-              DataRow(
-                cells: [
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "10 To 25",
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                        DataRow(
+                          cells: [
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "Above 25",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "\u20B9" + product.itemPriceAbove25,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "Above 50",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  "\u20B9" + product.itemPriceBag,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(
+                    width: double.infinity,
+                    child: DataTable(
+                      columns: [
+                        DataColumn(label: Text("Price")),
+                        DataColumn(label: Text("\u20B9" + product.itemPrice)),
+                      ],
+                      rows: [],
                     ),
                   ),
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "\u20B9"+product.itemPrice10To25,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              DataRow(
-                cells: [
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "Above 25",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "\u20B9"+product.itemPriceAbove25,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              DataRow(
-                cells: [
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "Above 50",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  DataCell(
-                    Container(
-                      child: Text(
-                        "\u20B9"+product.itemPriceBag,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-                ]) : DataTable(columns: [
-              DataColumn(label: Text("Price")),
-              DataColumn(label: Text("\u20B9"+product.itemPrice)),
-            ],rows :[],),
-              ],
-            ),
-
+          ],
+        ),
         buttons: [
           DialogButton(
             onPressed: () {
-              if(_controller.text != "0") {
+              if (_controller.text != "0") {
                 Navigator.pop(context);
 
                 Items item = new Items();
@@ -184,7 +202,6 @@ class ProductCardState extends State<ProductCard> {
                   item.price = product.itemPrice;
                 }
 
-
                 item.rowTotal =
                     (int.parse(_controller.text) * double.parse(item.price))
                         .toInt()
@@ -195,19 +212,19 @@ class ProductCardState extends State<ProductCard> {
                 }
                 globals.cartItems.add(item);
 
-                if (globals.order == null)
-                  globals.order = new Order();
+                if (globals.order == null) globals.order = new Order();
 
                 globals.order.items = globals.cartItems;
 
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      _controller.text + "KGs of " + product.itemName +
-                          " Added to Cart."),
+                  content: Text(_controller.text +
+                      "KGs of " +
+                      product.itemName +
+                      " Added to Cart."),
                 ));
 
                 widget.onAdd();
-              }else{
+              } else {
                 Fluttertoast.showToast(
                     msg: "Select Quantity!",
                     toastLength: Toast.LENGTH_SHORT,
@@ -215,13 +232,12 @@ class ProductCardState extends State<ProductCard> {
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
-                    fontSize: 16.0
-                );
+                    fontSize: 16.0);
               }
-            } ,
+            },
             child: Text(
               "Add to Cart",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 15),
             ),
           )
         ]).show();
@@ -233,16 +249,15 @@ class ProductCardState extends State<ProductCard> {
     return new Card(
       child: Column(children: <Widget>[
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           color: Color(0xffeceff0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                     product.itemName,
+                padding: EdgeInsets.all(5.0),
+                child: Text(product.itemName,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14,
@@ -254,71 +269,56 @@ class ProductCardState extends State<ProductCard> {
               ),
               Container(
                 alignment: Alignment.centerRight,
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Icon(
-                  product.itemPriceRaised ? Icons.arrow_upward : Icons.arrow_downward,
+                  product.itemPriceRaised
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
                 ),
               ),
             ],
           ),
         ),
         Container(
-          width: double.infinity,
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                DataTable(
-                  headingRowHeight : 0.0,
-                  dividerThickness: 0.0,
-                  columns: [
-                    DataColumn(
-                      label: Text("")
-                    ),
-                    DataColumn(
-                      label: Text("")
-                    ),
-                  ],
-                  rows: [
-                    DataRow(
-                      cells: [
-                        DataCell(
-                          Container(
-                            child: Text(
-                               product.itemPriceBag != null ? "\u20B9"+product.itemPriceBag  + " Onwards" : "\u20B9"+product.itemPrice,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          MaterialButton(
-                            height: 35,
-                            color: Color(0xFF1e7e34),
-                            child: new Text(
-                              'Add',
-                              style: new TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              _openPopup(context,product);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 15, 5, 0),
+                child: Text(
+                  product.itemPriceBag != null
+                      ? "\u20B9" + " " + product.itemPriceBag + " Onwards"
+                      : "\u20B9" + " " + product.itemPrice,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ]),
+              ),
+              Expanded(child: Container()),
+              Container(
+                child: MaterialButton(
+                  height: 35.0,
+                  minWidth: 45.0,
+                  color: Color(0xFF1e7e34),
+                  child: new Text(
+                    'Add'.toUpperCase(),
+                    style: new TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    _openPopup(context, product);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ]),
       margin: const EdgeInsets.all(5.0),
     );
   }
-
 
   showURLDialog(windowurl) {
     AwesomeDialog(

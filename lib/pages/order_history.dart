@@ -21,11 +21,18 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
   List<Order> orderList;
   DateTime selectedDate;
 
-  Future<Null> getOrderList(String month,String year) async {
+  Future<Null> getOrderList(String month, String year) async {
     final mobile = await LocalService.getMobile(globals.CONTACT_KEY);
     final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
     final response = await http.get(
-        "https://almightysnk.com/rest/ordercontroller/orderHistory/"+month+"/"+year+"/"+mobile+"/"+authKey);
+        "https://almightysnk.com/rest/ordercontroller/orderHistory/" +
+            month +
+            "/" +
+            year +
+            "/" +
+            mobile +
+            "/" +
+            authKey);
 
     final responseJson = json.decode(response.body);
     setState(() {
@@ -39,7 +46,7 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
   void initState() {
     super.initState();
     selectedDate = widget.initialDate;
-    getOrderList("${selectedDate?.month}","${selectedDate?.year}");
+    getOrderList("${selectedDate?.month}", "${selectedDate?.year}");
   }
 
   @override
@@ -50,59 +57,70 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
         title: new Text("Almighty e-shop"),
         automaticallyImplyLeading: false,
       ),
-      body: Column(
-    children: <Widget>[
-        Row(
-    children: [
-      Text(
-        'Year: ${selectedDate?.year} Month: ' + new DateFormat("MMM").format(selectedDate).toString(),
-        style: Theme.of(context).textTheme.headline6,
-        textAlign: TextAlign.center,
-      ),
-    ],
-    ),
+      body: Column(children: <Widget>[
+        Column(
+          children: [
+            Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 10.0),
+              child: Text(
+                'Year : ${selectedDate?.year} Month : ' +
+                    new DateFormat("MMM").format(selectedDate).toString(),
+                style: Theme.of(context).textTheme.headline6,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
         new Expanded(
-            child:RefreshIndicator(
-        child: orderList != null && orderList.length != 0
-            ? Column(children: [
-                Expanded(
-                    child: ListView.builder(
-                  itemCount: orderList.length,
-                  itemBuilder: (context, i) {
-                    final item = orderList[i];
-                    return OrderCard(key: ObjectKey(item),order:orderList[i]);
-                  },
-                )),
-              ])
-            : new Container(
-                alignment: Alignment.center, child: Text("No Orders Found.")),
-        onRefresh: refreshList,
-      ),)]),floatingActionButton: Builder(
-      builder: (context) => FloatingActionButton(
-        onPressed: () {
-          showMonthPicker(
-            context: context,
-            firstDate: DateTime(DateTime.now().year - 1, 5),
-            lastDate: DateTime(DateTime.now().year + 1, 9),
-            initialDate: selectedDate ?? widget.initialDate,
-            locale: Locale("en"),
-          ).then((date) {
-            if (date != null) {
-              setState(() {
-                selectedDate = date;
-                getOrderList("${selectedDate?.month}","${selectedDate?.year}");
-              });
-            }
-          });
-        },
-        child: Icon(Icons.calendar_today),
+          child: RefreshIndicator(
+            child: orderList != null && orderList.length != 0
+                ? Column(children: [
+                    Expanded(
+                        child: ListView.builder(
+                      itemCount: orderList.length,
+                      itemBuilder: (context, i) {
+                        final item = orderList[i];
+                        return OrderCard(
+                            key: ObjectKey(item), order: orderList[i]);
+                      },
+                    )),
+                  ])
+                : new Container(
+                    alignment: Alignment.center,
+                    child: Text("No Orders Found.")),
+            onRefresh: refreshList,
+          ),
+        )
+      ]),
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {
+            showMonthPicker(
+              context: context,
+              firstDate: DateTime(DateTime.now().year - 1, 5),
+              lastDate: DateTime(DateTime.now().year + 1, 9),
+              initialDate: selectedDate ?? widget.initialDate,
+              locale: Locale("en"),
+            ).then((date) {
+              if (date != null) {
+                setState(() {
+                  selectedDate = date;
+                  getOrderList(
+                      "${selectedDate?.month}", "${selectedDate?.year}");
+                });
+              }
+            });
+          },
+          child: Icon(Icons.calendar_today),
+        ),
       ),
-    ),
     );
   }
 
-   Future<Null> refreshList() async{
-    getOrderList("${selectedDate?.month}","${selectedDate?.year}");
+  Future<Null> refreshList() async {
+    getOrderList("${selectedDate?.month}", "${selectedDate?.year}");
   }
 
   void removeItem(int index) {
@@ -110,5 +128,4 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
       globals.cartItems = List.from(globals.cartItems)..removeAt(index);
     });
   }
-
 }

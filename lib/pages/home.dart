@@ -29,12 +29,14 @@ class HomePageState extends State<HomePage> {
     final responseJson = json.decode(response.body);
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
-    if (productList == null) productList = List<Product>(); else productList.clear();
+    if (productList == null)
+      productList = List<Product>();
+    else
+      productList.clear();
     productList.addAll(productListFromApi);
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   bool _showProgress = false;
   @override
   void initState() {
@@ -51,23 +53,20 @@ class HomePageState extends State<HomePage> {
         title: new Text("Almighty e-shop"),
         actions: <Widget>[
           new Container(
-            height: 150.0,
-            width: 30.0,
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: new Stack(
               children: <Widget>[
-            Padding(
-            padding: const EdgeInsets.only(
-                right: 15.0),
-        //padding: EdgeInsets.symmetric(horizontal: 15),
-        child:
-                new IconButton(
-                  icon: new Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
+                Container(
+                  //padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                    onPressed: null,
                   ),
-                  onPressed: null,
                 ),
-            ),
                 globals.cartItems == null || globals.cartItems.length == 0
                     ? new Container()
                     : new Positioned(
@@ -97,8 +96,9 @@ class HomePageState extends State<HomePage> {
       body: SafeArea(
         child: new Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              padding: const EdgeInsets.all(1.0),
+              margin: EdgeInsets.all(4.0),
               child: TextField(
                 onChanged: (value) {
                   filterSearchResults(value);
@@ -107,9 +107,12 @@ class HomePageState extends State<HomePage> {
                 decoration: InputDecoration(
                     labelText: "Search",
                     hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.blue,
+                    ),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)))),
               ),
             ),
             new Expanded(
@@ -141,7 +144,9 @@ class HomePageState extends State<HomePage> {
                               _showProgress = false;
                             });
                           }),
-                        _showProgress ? CircularProgressIndicator() : new Container(),
+                      _showProgress
+                          ? CircularProgressIndicator()
+                          : new Container(),
                     ])),
             ),
           ],
