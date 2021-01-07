@@ -251,8 +251,7 @@ class ProductCardState extends State<ProductCard> {
         Container(
           padding: const EdgeInsets.all(2.0),
           color: Color(0xffeceff0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Wrap(
             children: <Widget>[
               Container(
                 alignment: Alignment.centerLeft,
