@@ -36,6 +36,8 @@ dependencies:
   flutter_local_notifications: ^3.0.2
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
   reactive_forms: ^7.6.3
