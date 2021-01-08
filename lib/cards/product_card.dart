@@ -251,20 +251,21 @@ class ProductCardState extends State<ProductCard> {
         Container(
           padding: const EdgeInsets.all(2.0),
           color: Color(0xffeceff0),
-          child: Wrap(
+          child: Row(
             children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.all(5.0),
-                child: Text(product.itemName,
+              Expanded(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    product.itemName,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                    )),
-              ),
-              Expanded(
-                child: new Container(),
+                    ),
+                  ),
+                ),
               ),
               Container(
                 alignment: Alignment.centerRight,
@@ -273,6 +274,7 @@ class ProductCardState extends State<ProductCard> {
                   product.itemPriceRaised
                       ? Icons.arrow_upward
                       : Icons.arrow_downward,
+                  size: 18.0,
                 ),
               ),
             ],
@@ -298,7 +300,7 @@ class ProductCardState extends State<ProductCard> {
                 child: MaterialButton(
                   height: 35.0,
                   minWidth: 45.0,
-                  color: Color(0xFF1e7e34),
+                  color: Color(0xFF00b447),
                   child: new Text(
                     'Add'.toUpperCase(),
                     style: new TextStyle(

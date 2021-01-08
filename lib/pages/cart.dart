@@ -75,7 +75,7 @@ class CartPageState extends State<CartPage> {
                                       showCheckoutDialog();
                                     },
                                     textColor: Colors.white,
-                                    color: Colors.green,
+                                    color: Color(0xFF00b447),
                                     padding: const EdgeInsets.all(8.0),
                                     child: new Text(
                                       "Checkout",

@@ -217,9 +217,8 @@ class _SignupPageState extends State<SignupPage> {
                     return ButtonTheme(
                       minWidth: 250,
                       height: 50,
-                      buttonColor: Colors.blue,
                       child: RaisedButton(
-                        color: Colors.blue,
+                        color: Color(0xFFfa881c),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),

@@ -73,8 +73,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     height: 50,
                     width: 250,
                     decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
+                      color: Color(0xFFfa881c),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child:
                         ReactiveFormConsumer(builder: (context, form, child) {
                       return FlatButton(

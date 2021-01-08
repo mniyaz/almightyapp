@@ -113,7 +113,10 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
               }
             });
           },
-          child: Icon(Icons.calendar_today),
+          child: Icon(
+            Icons.calendar_today,
+            color: Colors.white,
+          ),
         ),
       ),
     );

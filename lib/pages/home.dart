@@ -51,10 +51,11 @@ class HomePageState extends State<HomePage> {
       appBar: new AppBar(
         centerTitle: false,
         title: new Text("Almighty e-shop"),
+        brightness: Brightness.light,
         actions: <Widget>[
           new Container(
-            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+            // padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            // margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: new Stack(
               children: <Widget>[
                 Container(
@@ -72,8 +73,11 @@ class HomePageState extends State<HomePage> {
                     : new Positioned(
                         child: new Stack(
                         children: <Widget>[
-                          new Icon(Icons.brightness_1,
-                              size: 20.0, color: Colors.green[800]),
+                          new Icon(
+                            Icons.brightness_1,
+                            size: 20.0,
+                            color: Color(0xFFfa881c),
+                          ),
                           new Positioned(
                               top: 4.0,
                               right: 6.0,
@@ -109,7 +113,7 @@ class HomePageState extends State<HomePage> {
                     hintText: "Search",
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.blue,
+                      color: Color(0xFFfa881c),
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5.0)))),
@@ -134,7 +138,12 @@ class HomePageState extends State<HomePage> {
                       child: Column(children: <Widget>[
                       Text("No data found for selected Filter"),
                       RaisedButton(
-                          child: Text("Refresh"),
+                          child: Text(
+                            "Refresh",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                           onPressed: () {
                             setState(() {
                               _showProgress = true;

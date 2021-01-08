@@ -242,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               return ButtonTheme(
                                   minWidth: 250,
                                   height: 50,
-                                  buttonColor: Colors.blue,
+                                  buttonColor: Color(0xFFfa881c),
                                   child: RaisedButton(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20.0),
