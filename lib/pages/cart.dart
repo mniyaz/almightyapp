@@ -24,7 +24,20 @@ class CartPageState extends State<CartPage> {
     return new Scaffold(
         appBar: new AppBar(
           centerTitle: false,
-          title: new Text("Almighty e-shop"),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/AlmightyLogo.png',
+                fit: BoxFit.contain,
+                height: 25,
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Almighty e-shop'),
+              ),
+            ],
+          ),
           automaticallyImplyLeading: false,
         ),
         body: _loading

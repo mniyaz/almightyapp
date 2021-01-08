@@ -270,11 +270,20 @@ class ProductCardState extends State<ProductCard> {
               Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.all(5.0),
-                child: Icon(
-                  product.itemPriceRaised
-                      ? Icons.arrow_upward
-                      : Icons.arrow_downward,
-                  size: 18.0,
+                child: Row(
+                  children: [
+                    product.itemPriceRaised
+                        ? Icon(
+                            Icons.arrow_drop_up,
+                            color: Colors.green,
+                            size: 38.0,
+                          )
+                        : Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.red,
+                            size: 38.0,
+                          ),
+                  ],
                 ),
               ),
             ],

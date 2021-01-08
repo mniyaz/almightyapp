@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 Widget createDrawerBodyItem(
     {IconData icon, String text, GestureTapCallback onTap}) {
   return ListTile(
@@ -6,7 +7,7 @@ Widget createDrawerBodyItem(
       children: <Widget>[
         Icon(icon),
         Padding(
-          padding: EdgeInsets.only(left: 8.0),
+          padding: EdgeInsets.only(left: 0.0),
           child: Text(text),
         )
       ],

@@ -49,9 +49,26 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        centerTitle: false,
-        title: new Text("Almighty e-shop"),
-        brightness: Brightness.light,
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                'assets/images/AlmightyLogo.png',
+                fit: BoxFit.contain,
+                height: 25,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Almighty e-shop'),
+            ),
+          ],
+        ),
+        brightness: Brightness.dark,
         actions: <Widget>[
           new Container(
             // padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
