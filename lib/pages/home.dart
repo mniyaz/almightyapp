@@ -72,7 +72,7 @@ class HomePageState extends State<HomePage> {
         actions: <Widget>[
           new Container(
             // padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            // margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
             child: new Stack(
               children: <Widget>[
                 Container(
