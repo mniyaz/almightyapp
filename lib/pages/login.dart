@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:almighty/widgets/tabs_page.dart';
 import 'package:almighty/services/local_data_service.dart';
 import 'package:almighty/globals.dart' as globals;
+import 'package:flutter_session/flutter_session.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,11 +20,23 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _showProgress = false;
   bool _passwordVisible;
+  bool sessionAvailable = false;
 
   @override
   void initState() {
+    checkSession();
     _passwordVisible = false;
     super.initState();
+  }
+
+  checkSession() async {
+    String phone = await FlutterSession().get(globals.PHONE);
+    if(phone != ""){
+      sessionAvailable = true;
+
+    }else{
+      sessionAvailable = false;
+    }
   }
 
   final form = FormGroup({
@@ -189,8 +202,9 @@ class _LoginPageState extends State<LoginPage> {
     final responseJson = json.decode(response.body);
     if (responseJson["allow"] == "USER AUTHENTICATED") {
       LocalService.saveData(globals.AUTH_KEY, responseJson[globals.AUTH_KEY]);
-      LocalService.saveData(
-          globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
+      LocalService.saveData(globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
+      await FlutterSession().set(globals.PHONE, this.form.control('phone').value.toString());
+      await FlutterSession().set(globals.PASSWORD, this.form.control('password').value.toString());
       setState(() {
         _showProgress = false;
       });

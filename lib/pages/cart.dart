@@ -82,9 +82,6 @@ class CartPageState extends State<CartPage> {
                                   padding: EdgeInsets.all(10.0),
                                   child: RaisedButton(
                                     onPressed: () {
-                                      setState(() {
-                                        _loading = true;
-                                      });
                                       showCheckoutDialog();
                                     },
                                     textColor: Colors.white,
@@ -138,6 +135,9 @@ class CartPageState extends State<CartPage> {
       title: 'Confirm Order',
       desc: "",
       btnOkOnPress: () {
+        setState(() {
+          _loading = true;
+        });
         callCheckout();
         sec5Timer();
       },

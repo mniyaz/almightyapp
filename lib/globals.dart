@@ -5,6 +5,8 @@ List<Items> cartItems;
 Order order;
 final String AUTH_KEY = "authKey";
 final String CONTACT_KEY = "contactModel";
+final String PHONE = "phone";
+final String PASSWORD = "password";
 Contact contact;
 String otp;
 String phone;
