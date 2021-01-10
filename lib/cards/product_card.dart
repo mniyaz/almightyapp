@@ -38,9 +38,11 @@ class ProductCardState extends State<ProductCard> {
 
   _openPopup(context, Product product) {
     _controller.text = "0";
+    if(product.itemUnitType == null)
+      product.itemUnitType = "UNIT";
     Alert(
         context: context,
-        title: "Pick your Weight",
+        title: product.itemUnitType == "KG" ? "Pick your Weight" : "Pick your Quantity",
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,14 +72,14 @@ class ProductCardState extends State<ProductCard> {
               enabled: false,
               decoration: InputDecoration(
                 //icon: Icon(Icons.line_weight),
-                labelText: 'Weight',
+                labelText: product.itemUnitType == "KG" ? "Weight" : "Unit",
               ),
             ),
             product.itemPriceBag != null && product.itemPriceBag != "0"
                 ? Container(
                     child: DataTable(
                       columns: [
-                        DataColumn(label: Text("Weight(KGs)")),
+                        DataColumn(label: Text(product.itemUnitType)),
                         DataColumn(label: Text("Price")),
                       ],
                       rows: [
@@ -201,7 +203,7 @@ class ProductCardState extends State<ProductCard> {
                 } else {
                   item.price = product.itemPrice;
                 }
-
+                item.UOM = product.itemUnitType;
                 item.rowTotal =
                     (int.parse(_controller.text) * double.parse(item.price))
                         .toInt()
@@ -218,7 +220,7 @@ class ProductCardState extends State<ProductCard> {
 
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(_controller.text +
-                      "KGs of " +
+                      product.itemUnitType+"s of " +
                       product.itemName +
                       " Added to Cart."),
                 ));

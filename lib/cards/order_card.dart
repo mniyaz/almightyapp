@@ -98,7 +98,7 @@ class OrderCardState extends State<OrderCard> {
                     columnSpacing: 15.0,
                     columns: [
                       DataColumn(label: Text("Item")),
-                      DataColumn(label: Text("Kgs")),
+                      DataColumn(label: Text("Qty")),
                       DataColumn(label: Text("Price")),
                     ],
                     rows: order.items

@@ -9,6 +9,7 @@ class Items {
   DateTime cartCreatedTime;
   String productName;
   int qty;
+  String UOM;
   String price;
   int cGSTPercentage;
   int sGSTPercentage;
@@ -20,6 +21,7 @@ class Items {
         this.cartCreatedTime,
         this.productName,
         this.qty,
+        this.UOM,
         this.price,
         this.cGSTPercentage,
         this.sGSTPercentage,
