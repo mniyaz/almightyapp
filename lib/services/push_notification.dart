@@ -1,4 +1,4 @@
-/* import 'package:almighty/services/local_data_service.dart';
+import 'package:almighty/services/local_data_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -79,7 +79,7 @@ class PushNotificationsManager {
         styleInformation: BigTextStyleInformation(''),
         showProgress: true,
         priority: Priority.high,
-        ticker: 'test ticker');
+        ticker: '');
 
     var iOSChannelSpecifics = IOSNotificationDetails(
         sound: 'default',
@@ -87,10 +87,10 @@ class PushNotificationsManager {
         presentSound: true,
         badgeNumber: 1,
         presentAlert: true,
-        subtitle: "Test");
+        subtitle: "");
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         0, title, body, platformChannelSpecifics);
   }
-}*/
+}

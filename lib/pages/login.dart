@@ -1,5 +1,6 @@
 import 'package:almighty/pages/forgot_password.dart';
 import 'package:almighty/pages/signup.dart';
+import 'package:almighty/services/push_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:almighty/widgets/tabs_page.dart';
 import 'package:almighty/services/local_data_service.dart';
@@ -31,10 +32,9 @@ class _LoginPageState extends State<LoginPage> {
 
   checkSession() async {
     String phone = await FlutterSession().get(globals.PHONE);
-    if(phone != ""){
+    if (phone != "") {
       sessionAvailable = true;
-
-    }else{
+    } else {
       sessionAvailable = false;
     }
   }
@@ -202,9 +202,14 @@ class _LoginPageState extends State<LoginPage> {
     final responseJson = json.decode(response.body);
     if (responseJson["allow"] == "USER AUTHENTICATED") {
       LocalService.saveData(globals.AUTH_KEY, responseJson[globals.AUTH_KEY]);
-      LocalService.saveData(globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
-      await FlutterSession().set(globals.PHONE, this.form.control('phone').value.toString());
-      await FlutterSession().set(globals.PASSWORD, this.form.control('password').value.toString());
+      LocalService.saveData(
+          globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
+      await FlutterSession()
+          .set(globals.PHONE, this.form.control('phone').value.toString());
+      await FlutterSession().set(
+          globals.PASSWORD, this.form.control('password').value.toString());
+      PushNotificationsManager pM = new PushNotificationsManager();
+      await pM.init();
       setState(() {
         _showProgress = false;
       });
