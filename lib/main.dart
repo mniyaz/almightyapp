@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new SplashScreen(
         navigateAfterFuture: loadFromFuture(),
         title: new Text(
-          'Welcome To Almighty Enterprises',
+          'Welcome To Almighty',
           style: new TextStyle(fontSize: 20.0),
         ),
         useLoader: true,
