@@ -42,9 +42,10 @@ class PushNotificationsManager {
       _firebaseMessaging.requestNotificationPermissions(
           const IosNotificationSettings(
               sound: true, badge: true, alert: true, provisional: false));
+      _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings setting) {
+      });
       _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-          print("onMessage: $message");
           showNotification(message['notification']['title'],
               message['notification']['body']);
         },
@@ -56,7 +57,8 @@ class PushNotificationsManager {
       String token = await _firebaseMessaging.getToken();
       final String mobileNumber =
           await LocalService.getMobile(globals.CONTACT_KEY);
-      print(mobileNumber + " : $token");
+
+
       final checkResponse = await http.get(
           "https://almightysnk.com/rest/productcontroller/updatefcm/" +
               mobileNumber +
@@ -91,6 +93,6 @@ class PushNotificationsManager {
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, title, body, platformChannelSpecifics);
+        0, title, body, platformChannelSpecifics,payload: "");
   }
 }

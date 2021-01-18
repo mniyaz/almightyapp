@@ -20,6 +20,8 @@ Items _$ItemsFromJson(Map<String, dynamic> json) {
     sGSTPercentage: json['sGSTPercentage'] as int,
     iGSTPercentage: json['iGSTPercentage'] as int,
     rowTotal: json['rowTotal'] as String,
+    cartStatus: json['cartStatus'] as String,
+    rejectReason: json['rejectReason'] as String,
   );
 }
 
@@ -34,4 +36,6 @@ Map<String, dynamic> _$ItemsToJson(Items instance) => <String, dynamic>{
       'sGSTPercentage': instance.sGSTPercentage,
       'iGSTPercentage': instance.iGSTPercentage,
       'rowTotal': instance.rowTotal,
+      'cartStatus': instance.cartStatus,
+      'rejectReason': instance.rejectReason,
     };

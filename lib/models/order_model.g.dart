@@ -20,6 +20,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     orderStatus: json['orderStatus'] as String,
     tmpOrderId: json['tmpOrderId'] as String,
     paid: json['paid'] as bool,
+    rejectReason: json['rejectReason'] as String,
     items: (json['items'] as List)
         ?.map(
             (e) => e == null ? null : Items.fromJson(e as Map<String, dynamic>))
@@ -45,6 +46,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'orderStatus': instance.orderStatus,
       'tmpOrderId': instance.tmpOrderId,
       'paid': instance.paid,
+      'rejectReason': instance.rejectReason,
       'items': instance.items,
       'history': instance.history,
       'contact': instance.contact,

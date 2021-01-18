@@ -15,6 +15,8 @@ class Items {
   int sGSTPercentage;
   int iGSTPercentage;
   String rowTotal;
+  String cartStatus;
+  String rejectReason;
 
   Items(
       {this.cartId,
@@ -26,7 +28,9 @@ class Items {
         this.cGSTPercentage,
         this.sGSTPercentage,
         this.iGSTPercentage,
-        this.rowTotal});
+        this.rowTotal,
+      this.cartStatus,
+      this.rejectReason});
 
   factory Items.fromJson(Map<String, dynamic> json) => _$ItemsFromJson(json);
   Map<String, dynamic> toJson() => _$ItemsToJson(this);

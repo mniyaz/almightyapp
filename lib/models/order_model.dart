@@ -18,6 +18,7 @@ class Order {
   String orderStatus;
   String tmpOrderId;
   bool paid;
+  String rejectReason;
   List<Items> items;
   List<History> history;
   Contact contact;
@@ -33,6 +34,7 @@ class Order {
         this.orderStatus,
         this.tmpOrderId,
         this.paid,
+        this.rejectReason,
         this.items,
         this.history,
         this.contact});
