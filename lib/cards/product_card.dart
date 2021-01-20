@@ -56,6 +56,13 @@ class ProductCardState extends State<ProductCard> {
                 textAlign: TextAlign.left,
               ),
             ),
+            Container(
+              child: Text(
+                product.itemDescription,
+                style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w900),
+                textAlign: TextAlign.left,
+              ),
+            ),
             SpinBox(
               min: 1,
               max: 10000,
