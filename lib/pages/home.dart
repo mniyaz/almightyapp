@@ -1,6 +1,7 @@
 import 'package:almighty/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:filter_list/filter_list.dart';
 
 import '../models/product.dart';
 import '../cards/product_card.dart';
@@ -43,6 +44,45 @@ class HomePageState extends State<HomePage> {
     super.initState();
     _showProgress = false;
     getProductList();
+  }
+
+  List<String> categoryList = [
+    globals.CATEGORY_FLOUR,
+    globals.CATEGORY_GRAINS,
+    globals.CATEGORY_MASALA_POWDER,
+    globals.CATEGORY_NUTS_SEEDS,
+    globals.CATEGORY_OIL,
+    globals.CATEGORY_PULSES,
+    globals.CATEGORY_RICE,
+    globals.CATEGORY_SPICES,
+    globals.CATEGORY_OTHERS,
+  ];
+  List<String> selectedCategoryList = [];
+
+  void _openFilterDialog() async {
+    await FilterListDialog.display(context,
+        allTextList: categoryList,
+        height: 480,
+        borderRadius: 20,
+        headlineText: "Select Category",
+        searchFieldHintText: "Search Here",
+        selectedTextList: selectedCategoryList, onApplyButtonClick: (list) {
+          productList.clear();
+          if (list != null && list.length > 0) {
+            setState(() {
+              selectedCategoryList = List.from(list);
+              selectedCategoryList.forEach((category) {
+                productList.addAll(productListFromApi.where((product) => product.category == category).toList());
+              });
+            });
+            Navigator.pop(context);
+          }else{
+            setState(() {
+              productList.addAll(productListFromApi);
+            });
+            Navigator.pop(context);
+          }
+        });
   }
 
   @override
@@ -141,6 +181,7 @@ class HomePageState extends State<HomePage> {
                   ? RefreshIndicator(
                       child: new ListView.builder(
                           shrinkWrap: true,
+                          padding: EdgeInsets.only(bottom: 56),
                           itemCount: productList.length,
                           itemBuilder: (context, index) {
                             final item = productList[index];
@@ -177,6 +218,13 @@ class HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "tag1",
+        onPressed: _openFilterDialog,
+        tooltip: 'Filter',
+        child: Icon(Icons.category,
+          color: Colors.white,),
       ),
       drawer: navigationDrawer(),
     );

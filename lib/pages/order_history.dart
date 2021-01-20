@@ -1,5 +1,6 @@
 import 'package:almighty/cards/order_card.dart';
 import 'package:almighty/models/order_model.dart';
+import 'package:almighty/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -56,6 +57,7 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
         centerTitle: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/AlmightyLogo.png',
@@ -68,7 +70,6 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
             ),
           ],
         ),
-        automaticallyImplyLeading: false,
       ),
       body: Column(children: <Widget>[
         Column(
@@ -109,6 +110,7 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
       ]),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
+          heroTag: "tag2",
           onPressed: () {
             showMonthPicker(
               context: context,
@@ -132,6 +134,7 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
           ),
         ),
       ),
+      drawer: navigationDrawer(),
     );
   }
 

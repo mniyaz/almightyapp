@@ -6,8 +6,6 @@ import 'create_drawer_body_item.dart';
 import 'create_drawer_header.dart';
 import 'package:almighty/globals.dart' as globals;
 
-import 'dart:async';
-
 class navigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

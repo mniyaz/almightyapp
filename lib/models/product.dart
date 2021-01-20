@@ -4,6 +4,8 @@ class Product {
   String itemName;
   String itemPrice;
   String itemUnitType;
+  String itemDescription;
+  String category;
   bool itemActive;
   bool itemPriceRaised;
   String itemPreviousPrice;
@@ -26,6 +28,8 @@ class Product {
         this.itemName,
         this.itemPrice,
         this.itemUnitType,
+        this.itemDescription,
+        this.category,
         this.itemActive,
         this.itemPriceRaised,
         this.itemPreviousPrice,
@@ -48,6 +52,8 @@ class Product {
     itemName = json['itemName'];
     itemPrice = json['itemPrice'];
     itemUnitType = json['itemUnitType'];
+    itemDescription = json['itemDescription'];
+    category = json['category'];
     itemActive = json['itemActive'];
     itemPriceRaised = json['itemPriceRaised'];
     itemPreviousPrice = json['itemPreviousPrice'];
@@ -72,6 +78,8 @@ class Product {
     data['itemName'] = this.itemName;
     data['itemPrice'] = this.itemPrice;
     data['UOM'] = this.itemUnitType;
+    data['itemDescription'] = this.itemDescription;
+    data['category'] = this.category;
     data['itemActive'] = this.itemActive;
     data['itemPriceRaised'] = this.itemPriceRaised;
     data['itemPreviousPrice'] = this.itemPreviousPrice;

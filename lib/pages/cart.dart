@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/services/local_data_service.dart';
+import 'package:almighty/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
@@ -22,10 +23,12 @@ class CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        drawer: navigationDrawer(),
         appBar: new AppBar(
           centerTitle: false,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 'assets/images/AlmightyLogo.png',
@@ -38,7 +41,6 @@ class CartPageState extends State<CartPage> {
               ),
             ],
           ),
-          automaticallyImplyLeading: false,
         ),
         body: _loading
             ? bodyProgress

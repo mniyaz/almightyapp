@@ -10,6 +10,7 @@ class Items {
   String productName;
   int qty;
   String UOM;
+  String category;
   String price;
   int cGSTPercentage;
   int sGSTPercentage;
@@ -24,6 +25,7 @@ class Items {
         this.productName,
         this.qty,
         this.UOM,
+        this.category,
         this.price,
         this.cGSTPercentage,
         this.sGSTPercentage,
