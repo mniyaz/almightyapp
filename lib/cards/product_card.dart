@@ -38,11 +38,12 @@ class ProductCardState extends State<ProductCard> {
 
   _openPopup(context, Product product) {
     _controller.text = "0";
-    if(product.itemUnitType == null)
-      product.itemUnitType = "UNIT";
+    if (product.itemUnitType == null) product.itemUnitType = "UNIT";
     Alert(
         context: context,
-        title: product.itemUnitType == "KG" ? "Pick your Weight" : "Pick your Quantity",
+        title: product.itemUnitType == "KG"
+            ? "Pick your Weight"
+            : "Pick your Quantity",
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +204,12 @@ class ProductCardState extends State<ProductCard> {
                 } else {
                   item.price = product.itemPrice;
                 }
-                item.UOM = product.itemUnitType;
+                if (product.itemUnitType == null ||
+                    product.itemUnitType == "null" ||
+                    product.itemUnitType == "")
+                  item.UOM = "UNIT";
+                else
+                  item.UOM = product.itemUnitType;
                 item.rowTotal =
                     (int.parse(_controller.text) * double.parse(item.price))
                         .toInt()
@@ -220,7 +226,8 @@ class ProductCardState extends State<ProductCard> {
 
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text(_controller.text +
-                      product.itemUnitType+"s of " +
+                      product.itemUnitType +
+                      "s of " +
                       product.itemName +
                       " Added to Cart."),
                 ));
