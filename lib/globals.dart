@@ -21,3 +21,4 @@ final String CATEGORY_FLOUR = "Flour";
 final String CATEGORY_MASALA_POWDER = "Masala Powder";
 final String CATEGORY_RICE = "Rice";
 final String CATEGORY_OTHERS = "Others";
+final String CATEGORY_ALL = "All";

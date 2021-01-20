@@ -1,7 +1,7 @@
+import 'package:almighty/pages/cart.dart';
 import 'package:almighty/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:filter_list/filter_list.dart';
 
 import '../models/product.dart';
 import '../cards/product_card.dart';
@@ -34,7 +34,6 @@ class HomePageState extends State<HomePage> {
       productList = List<Product>();
     else
       productList.clear();
-    productList.addAll(productListFromApi);
     setState(() {});
   }
 
@@ -44,6 +43,14 @@ class HomePageState extends State<HomePage> {
     super.initState();
     _showProgress = false;
     getProductList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog(
+          context: context,
+          child: new MyDialogDemo(
+            onValueChange: _onValueChange,
+            initialValue: _selectedId,
+          ));
+    });
   }
 
   List<String> categoryList = [
@@ -58,32 +65,16 @@ class HomePageState extends State<HomePage> {
     globals.CATEGORY_OTHERS,
   ];
   List<String> selectedCategoryList = [];
-
-  void _openFilterDialog() async {
-    await FilterListDialog.display(context,
-        allTextList: categoryList,
-        height: 480,
-        borderRadius: 20,
-        headlineText: "Select Category",
-        searchFieldHintText: "Search Here",
-        selectedTextList: selectedCategoryList, onApplyButtonClick: (list) {
-          productList.clear();
-          if (list != null && list.length > 0) {
-            setState(() {
-              selectedCategoryList = List.from(list);
-              selectedCategoryList.forEach((category) {
-                productList.addAll(productListFromApi.where((product) => product.category == category).toList());
-              });
-            });
-            Navigator.pop(context);
-          }else{
-            setState(() {
-              productList.addAll(productListFromApi);
-            });
-            Navigator.pop(context);
-          }
-        });
+  String _selectedId = "";
+  selectCategory(String category){
+    print("Category : "+ category);
+    productList.clear();
+    productListFromApi.sort((a, b) => a.itemName.compareTo(b.itemName));
+    setState(() {
+      productList.addAll(productListFromApi.where((product) => product.category == category).toList());
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +113,9 @@ class HomePageState extends State<HomePage> {
                       Icons.shopping_cart,
                       color: Colors.white,
                     ),
-                    onPressed: null,
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartPage()));
+                    },
                   ),
                 ),
                 globals.cartItems == null || globals.cartItems.length == 0
@@ -176,6 +169,28 @@ class HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.all(Radius.circular(5.0)))),
               ),
             ),
+        Container(
+          height: 20,
+        child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+        Row(
+        children: <Widget>[
+             new RichText(
+                text: new TextSpan(
+                  // Note: Styles for TextSpans must be explicitly defined.
+                  // Child text spans will inherit styles from parent
+                  style: new TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.black,
+                  ),
+                  children: <TextSpan>[
+                    new TextSpan(text: 'Filter:', style: new TextStyle(fontWeight: FontWeight.bold)),
+                    new TextSpan(text: " " + _selectedId),
+                  ],
+                ),
+              ),
+    ]),]),),
             new Expanded(
               child: productList != null && productList.length > 0
                   ? RefreshIndicator(
@@ -221,8 +236,15 @@ class HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "tag1",
-        onPressed: _openFilterDialog,
-        tooltip: 'Filter',
+        onPressed: () {
+          showDialog(
+              context: context,
+              child: new MyDialogDemo(
+                onValueChange: _onValueChange,
+                initialValue: _selectedId,
+              ));
+        },
+        tooltip: 'Category',
         child: Icon(Icons.category,
           color: Colors.white,),
       ),
@@ -280,5 +302,285 @@ class HomePageState extends State<HomePage> {
     });
 
     setState(() {});
+  }
+  void _onValueChange(String value) {
+    productList.clear();
+    if(value != globals.CATEGORY_ALL)
+      productList.addAll(productListFromApi.where((product) => product.category == value).toList());
+    else
+      productList.addAll(productListFromApi);
+    setState(() {
+      _selectedId = value;
+      productList.sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
+    });
+  }
+
+}
+
+class MyDialogDemo extends StatefulWidget {
+
+  const MyDialogDemo({this.onValueChange, this.initialValue});
+  final String initialValue;
+  final void Function(String) onValueChange;
+
+  @override
+  _MyDialogDemoState createState() => new _MyDialogDemoState();
+}
+
+class _MyDialogDemoState extends State<MyDialogDemo>{
+
+  String _selectedId;
+  @override
+  void initState() {
+    super.initState();
+    _selectedId = widget.initialValue;
+  }
+  @override
+  Widget build(BuildContext context){
+    return new SimpleDialog(
+      title: new Text("Select Category"),
+      children: <Widget>[
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Column(
+            children : [ Container(
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                'assets/images/AlmightyLogo.png',
+                fit: BoxFit.contain,
+                height: 25,
+              ),
+            ),
+            new Radio(
+              value: 0,
+              groupValue: "_radioValue1",
+              onChanged: (void nothing) {
+                Navigator.pop(context);
+                widget.onValueChange(globals.CATEGORY_FLOUR);
+              },
+            ),
+            new Text(
+              globals.CATEGORY_FLOUR,
+              style: new TextStyle(fontSize: 16.0),
+            ),
+            ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_GRAINS);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_GRAINS,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_MASALA_POWDER);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_MASALA_POWDER,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+          ],
+        ),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_NUTS_SEEDS);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_NUTS_SEEDS,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_OIL);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_OIL,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_PULSES);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_PULSES,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+          ],
+        ),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_RICE);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_RICE,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_SPICES);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_SPICES,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_OTHERS);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_OTHERS,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+          ],
+        ),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Column(
+                children : [ Container(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/AlmightyLogo.png',
+                    fit: BoxFit.contain,
+                    height: 25,
+                  ),
+                ),
+                  new Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_ALL);
+                    },
+                  ),
+                  new Text(
+                    globals.CATEGORY_ALL,
+                    style: new TextStyle(fontSize: 16.0),
+                  ),
+                ]),
+          ],
+        ),
+      ],
+    );
   }
 }
