@@ -44,6 +44,7 @@ class HomePageState extends State<HomePage> {
     _showProgress = false;
     getProductList();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //showDialog(context: context);
       showDialog(
           context: context,
           child: new MyDialogDemo(
@@ -66,15 +67,16 @@ class HomePageState extends State<HomePage> {
   ];
   List<String> selectedCategoryList = [];
   String _selectedId = "";
-  selectCategory(String category){
-    print("Category : "+ category);
+  selectCategory(String category) {
+    print("Category : " + category);
     productList.clear();
     productListFromApi.sort((a, b) => a.itemName.compareTo(b.itemName));
     setState(() {
-      productList.addAll(productListFromApi.where((product) => product.category == category).toList());
+      productList.addAll(productListFromApi
+          .where((product) => product.category == category)
+          .toList());
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +116,8 @@ class HomePageState extends State<HomePage> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartPage()));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => CartPage()));
                     },
                   ),
                 ),
@@ -169,28 +172,30 @@ class HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.all(Radius.circular(5.0)))),
               ),
             ),
-        Container(
-          height: 20,
-        child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-        Row(
-        children: <Widget>[
-             new RichText(
-                text: new TextSpan(
-                  // Note: Styles for TextSpans must be explicitly defined.
-                  // Child text spans will inherit styles from parent
-                  style: new TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.black,
+            Container(
+              height: 20,
+              child:
+                  ListView(scrollDirection: Axis.horizontal, children: <Widget>[
+                Row(children: <Widget>[
+                  new RichText(
+                    text: new TextSpan(
+                      // Note: Styles for TextSpans must be explicitly defined.
+                      // Child text spans will inherit styles from parent
+                      style: new TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black,
+                      ),
+                      children: <TextSpan>[
+                        new TextSpan(
+                            text: 'Filter:',
+                            style: new TextStyle(fontWeight: FontWeight.bold)),
+                        new TextSpan(text: " " + _selectedId),
+                      ],
+                    ),
                   ),
-                  children: <TextSpan>[
-                    new TextSpan(text: 'Filter:', style: new TextStyle(fontWeight: FontWeight.bold)),
-                    new TextSpan(text: " " + _selectedId),
-                  ],
-                ),
-              ),
-    ]),]),),
+                ]),
+              ]),
+            ),
             new Expanded(
               child: productList != null && productList.length > 0
                   ? RefreshIndicator(
@@ -245,8 +250,10 @@ class HomePageState extends State<HomePage> {
               ));
         },
         tooltip: 'Category',
-        child: Icon(Icons.category,
-          color: Colors.white,),
+        child: Icon(
+          Icons.category,
+          color: Colors.white,
+        ),
       ),
       drawer: navigationDrawer(),
     );
@@ -303,22 +310,24 @@ class HomePageState extends State<HomePage> {
 
     setState(() {});
   }
+
   void _onValueChange(String value) {
     productList.clear();
-    if(value != globals.CATEGORY_ALL)
-      productList.addAll(productListFromApi.where((product) => product.category == value).toList());
+    if (value != globals.CATEGORY_ALL)
+      productList.addAll(productListFromApi
+          .where((product) => product.category == value)
+          .toList());
     else
       productList.addAll(productListFromApi);
     setState(() {
       _selectedId = value;
-      productList.sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
+      productList
+          .sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
     });
   }
-
 }
 
 class MyDialogDemo extends StatefulWidget {
-
   const MyDialogDemo({this.onValueChange, this.initialValue});
   final String initialValue;
   final void Function(String) onValueChange;
@@ -327,54 +336,71 @@ class MyDialogDemo extends StatefulWidget {
   _MyDialogDemoState createState() => new _MyDialogDemoState();
 }
 
-class _MyDialogDemoState extends State<MyDialogDemo>{
-
+class _MyDialogDemoState extends State<MyDialogDemo> {
   String _selectedId;
   @override
   void initState() {
     super.initState();
     _selectedId = widget.initialValue;
   }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return new SimpleDialog(
       title: new Text("Select Category"),
       children: <Widget>[
-        new Row(
+        new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            new Column(
-            children : [ Container(
-              alignment: Alignment.centerLeft,
-              child: Image.asset(
-                'assets/images/AlmightyLogo.png',
-                fit: BoxFit.contain,
-                height: 25,
-              ),
-            ),
-            new Radio(
-              value: 0,
-              groupValue: "_radioValue1",
-              onChanged: (void nothing) {
-                Navigator.pop(context);
-                widget.onValueChange(globals.CATEGORY_FLOUR);
-              },
-            ),
-            new Text(
-              globals.CATEGORY_FLOUR,
-              style: new TextStyle(fontSize: 16.0),
-            ),
-            ]),
-            new Column(
-                children : [ Container(
-                  alignment: Alignment.centerLeft,
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                  alignment: Alignment.center,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    "assets/images/flour.png",
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
+                Container(
+                  child: Radio(
+                    value: 0,
+                    groupValue: "_radioValue1",
+                    onChanged: (void nothing) {
+                      Navigator.pop(context);
+                      widget.onValueChange(globals.CATEGORY_FLOUR);
+                    },
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    globals.CATEGORY_FLOUR,
+                    style: new TextStyle(fontSize: 16.0),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'assets/images/grains.png',
+                    fit: BoxFit.contain,
+                    height: 35.0,
+                  ),
+                ),
+                Container(
+                  child: Radio(
                     value: 0,
                     groupValue: "_radioValue1",
                     onChanged: (void nothing) {
@@ -382,21 +408,32 @@ class _MyDialogDemoState extends State<MyDialogDemo>{
                       widget.onValueChange(globals.CATEGORY_GRAINS);
                     },
                   ),
-                  new Text(
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
                     globals.CATEGORY_GRAINS,
                     style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
-            new Column(
-                children : [ Container(
-                  alignment: Alignment.centerLeft,
-                  child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
-                    fit: BoxFit.contain,
-                    height: 25,
+                    textAlign: TextAlign.left,
                   ),
                 ),
-                  new Radio(
+              ],
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'assets/images/masala.png',
+                    fit: BoxFit.contain,
+                    height: 35.0,
+                  ),
+                ),
+                Container(
+                  child: Radio(
                     value: 0,
                     groupValue: "_radioValue1",
                     onChanged: (void nothing) {
@@ -404,180 +441,204 @@ class _MyDialogDemoState extends State<MyDialogDemo>{
                       widget.onValueChange(globals.CATEGORY_MASALA_POWDER);
                     },
                   ),
-                  new Text(
+                ),
+                Container(
+                  child: Text(
                     globals.CATEGORY_MASALA_POWDER,
                     style: new TextStyle(fontSize: 16.0),
+                    textAlign: TextAlign.left,
                   ),
-                ]),
+                ),
+              ],
+            ),
           ],
         ),
-        new Row(
+        new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Column(
-                children : [ Container(
+            new Row(children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/nuts.png',
+                  fit: BoxFit.contain,
+                  height: 35.0,
+                ),
+              ),
+              new Radio(
+                value: 0,
+                groupValue: "_radioValue1",
+                onChanged: (void nothing) {
+                  Navigator.pop(context);
+                  widget.onValueChange(globals.CATEGORY_NUTS_SEEDS);
+                },
+              ),
+              new Text(
+                globals.CATEGORY_NUTS_SEEDS,
+                style: new TextStyle(fontSize: 16.0),
+              ),
+            ]),
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/oil.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_NUTS_SEEDS);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_NUTS_SEEDS,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
-            new Column(
-                children : [ Container(
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_OIL);
+                  },
+                ),
+                new Text(
+                  globals.CATEGORY_OIL,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/pulses.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_OIL);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_OIL,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
-            new Column(
-                children : [ Container(
-                  alignment: Alignment.centerLeft,
-                  child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
-                    fit: BoxFit.contain,
-                    height: 25,
-                  ),
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_PULSES);
+                  },
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_PULSES);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_PULSES,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
+                new Text(
+                  globals.CATEGORY_PULSES,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
           ],
         ),
-        new Row(
+        new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Column(
-                children : [ Container(
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/rice.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_RICE);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_RICE,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
-            new Column(
-                children : [ Container(
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_RICE);
+                  },
+                ),
+                new Text(
+                  globals.CATEGORY_RICE,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/spices.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_SPICES);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_SPICES,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
-            new Column(
-                children : [ Container(
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_SPICES);
+                  },
+                ),
+                new Text(
+                  globals.CATEGORY_SPICES,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/others.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_OTHERS);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_OTHERS,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_OTHERS);
+                  },
+                ),
+                new Text(
+                  globals.CATEGORY_OTHERS,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
           ],
         ),
-        new Row(
+        new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Column(
-                children : [ Container(
-                  alignment: Alignment.centerLeft,
+            new Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                  alignment: Alignment.topCenter,
                   child: Image.asset(
-                    'assets/images/AlmightyLogo.png',
+                    'assets/images/all.png',
                     fit: BoxFit.contain,
-                    height: 25,
+                    height: 35.0,
                   ),
                 ),
-                  new Radio(
-                    value: 0,
-                    groupValue: "_radioValue1",
-                    onChanged: (void nothing) {
-                      Navigator.pop(context);
-                      widget.onValueChange(globals.CATEGORY_ALL);
-                    },
-                  ),
-                  new Text(
-                    globals.CATEGORY_ALL,
-                    style: new TextStyle(fontSize: 16.0),
-                  ),
-                ]),
+                new Radio(
+                  value: 0,
+                  groupValue: "_radioValue1",
+                  onChanged: (void nothing) {
+                    Navigator.pop(context);
+                    widget.onValueChange(globals.CATEGORY_ALL);
+                  },
+                ),
+                new Text(
+                  globals.CATEGORY_ALL,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
           ],
         ),
       ],
