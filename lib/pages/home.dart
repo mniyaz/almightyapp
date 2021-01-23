@@ -78,12 +78,13 @@ class HomePageState extends State<HomePage> {
             productList.addAll(productListFromApi
                 .where((product) => product.category == category)
                 .toList());
+            productList.sort((a,b) => a.itemName.trim().compareTo(b.itemName.trim()));
           });
         });
         Navigator.pop(context);
       } else {
+        selectedCategoryList.clear();
         setState(() {
-          productList.addAll(productListFromApi);
         });
         Navigator.pop(context);
       }

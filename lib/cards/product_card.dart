@@ -26,7 +26,6 @@ class ProductCardState extends State<ProductCard> {
   Product product;
   String renderUrl;
   TextEditingController _controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -66,7 +65,7 @@ class ProductCardState extends State<ProductCard> {
             SpinBox(
               min: 1,
               max: 10000,
-              value: 1,
+              value: 0,
               showCursor: false,
               onChanged: (value) {
                 setState(() {
