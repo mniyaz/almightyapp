@@ -127,10 +127,24 @@ class OrderCardState extends State<OrderCard> {
                               ),
                               DataCell(
                                 Container(
-                                  child: Text(
-                                    "\u20B9" + " " + item.rowTotal,
-                                    textAlign: TextAlign.right,
-                                  ),
+                                  child: item.cartStatus == null ||
+                                          (item.cartStatus != null &&
+                                              item.cartStatus.toLowerCase() !=
+                                                  "rejected")
+                                      ? Text(
+                                          "\u20B9" + " " + item.rowTotal,
+                                          textAlign: TextAlign.right,
+                                        )
+                                      : IconButton(
+                                          icon: new Icon(
+                                              Icons.remove_circle_rounded),
+                                          color: Colors.red,
+                                          tooltip: "Rejected(" +
+                                              item.rejectReason +
+                                              ")",
+                                          highlightColor: Colors.red,
+                                          onPressed: null,
+                                        ),
                                 ),
                               ),
                             ],

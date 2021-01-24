@@ -23,8 +23,7 @@ class HomePageState extends State<HomePage> {
   List<Product> productListFromApi = List<Product>();
   List<Product> searchResult;
   Future<Null> getProductList() async {
-    final String mobileNumber =
-        await LocalService.getMobile(globals.CONTACT_KEY);
+    final String mobileNumber = await LocalService.getContactMobile();
     final response = await http.get(
         "https://almightysnk.com/rest/productcontroller/getlist/" +
             mobileNumber);
@@ -62,6 +61,21 @@ class HomePageState extends State<HomePage> {
   ];
   List<String> selectedCategoryList = [];
 
+  Future<Null> getProductListWithFilter() async {
+    await getProductList();
+    if (selectedCategoryList != null && selectedCategoryList.length > 0) {
+      productList.clear();
+      selectedCategoryList.forEach((category) {
+        productList.addAll(productListFromApi
+            .where((product) => product.category == category)
+            .toList());
+        productList
+            .sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
+      });
+      setState(() {});
+    }
+  }
+
   void _openFilterDialog() async {
     await FilterListDialog.display(context,
         allTextList: categoryList,
@@ -78,14 +92,14 @@ class HomePageState extends State<HomePage> {
             productList.addAll(productListFromApi
                 .where((product) => product.category == category)
                 .toList());
-            productList.sort((a,b) => a.itemName.trim().compareTo(b.itemName.trim()));
+            productList
+                .sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
           });
         });
         Navigator.pop(context);
       } else {
         selectedCategoryList.clear();
-        setState(() {
-        });
+        setState(() {});
         Navigator.pop(context);
       }
     });
@@ -224,7 +238,7 @@ class HomePageState extends State<HomePage> {
                                 product: productList[index],
                                 onAdd: () => updateCart(index));
                           }),
-                      onRefresh: getProductList,
+                      onRefresh: getProductListWithFilter,
                     )
                   : Center(
                       child: Column(children: <Widget>[
@@ -240,7 +254,7 @@ class HomePageState extends State<HomePage> {
                             setState(() {
                               _showProgress = true;
                             });
-                            getProductList();
+                            getProductListWithFilter();
                             setState(() {
                               _showProgress = false;
                             });

@@ -57,7 +57,7 @@ class ProductCardState extends State<ProductCard> {
             ),
             Container(
               child: Text(
-                product.itemDescription,
+                product.itemDescription != null ? product.itemDescription : "",
                 style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w900),
                 textAlign: TextAlign.left,
               ),

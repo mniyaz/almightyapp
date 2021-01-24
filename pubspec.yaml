@@ -31,14 +31,17 @@ dependencies:
   awesome_dialog: ^1.2.1
   path_provider: ^1.6.24
   fluttertoast: ^7.1.6
-  firebase_messaging: ^7.0.3
-  flutter_local_notifications: ^3.0.2
-  flutter_session: ^0.1.1
+  flutter_local_notifications: ^3.0.3
   filter_list: ^0.0.5
+  shared_preferences: ^0.5.12+4
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  firebase_messaging:
+    git:
+      url: https://github.com/MaikuB/flutterfire.git
+      path: packages/firebase_messaging
 
 
   reactive_forms: ^7.6.3

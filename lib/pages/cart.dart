@@ -116,8 +116,8 @@ class CartPageState extends State<CartPage> {
   }
 
   Future<Null> checkIfOrderCreated(String tmpOrderId) async {
-    final mobile = await LocalService.getMobile(globals.CONTACT_KEY);
-    final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
+    final mobile = await LocalService.getContactMobile();
+    final authKey = await LocalService.loadAuthKey();
     final response = await http.get(
         "https://almightysnk.com/rest/ordercontroller/checkIfOrderCreated/" +
             tmpOrderId +
@@ -150,8 +150,8 @@ class CartPageState extends State<CartPage> {
     String url = 'https://almightysnk.com/rest/ordercontroller/createOrder';
     globals.order.orderStatus = "Order Placed";
 
-    final Contact contact = await LocalService.getContact(globals.CONTACT_KEY);
-    final authKey = await LocalService.getAuthKey(globals.AUTH_KEY);
+    final Contact contact = await LocalService.loadContact();
+    final authKey = await LocalService.loadAuthKey();
     globals.order.tmpOrderId = contact.contactMobile +
         DateTime.now().millisecondsSinceEpoch.toString();
     contact.authKey = authKey;

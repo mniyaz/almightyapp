@@ -1,10 +1,7 @@
-import 'package:almighty/pages/home.dart';
 import 'package:almighty/pages/login.dart';
-import 'package:almighty/pages/profile.dart';
 import 'package:almighty/services/local_data_service.dart';
 import 'package:almighty/widgets/tabs_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:almighty/globals.dart' as globals;
 
@@ -21,9 +18,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-
-
   @override
   void initState() {
     super.initState();
@@ -32,9 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<Widget> loadFromFuture() async {
-    final phone = await FlutterSession().get(globals.PHONE);
+    String phone = await LocalService.getContactMobile();
+    print("splahsreen : " + phone.toString());
     if (phone != null && phone.toString() != "") {
-      String password = await FlutterSession().get(globals.PASSWORD);
+      String password = await LocalService.loadPassword();
+      print("splahsreen : " + password);
       final response = await http.get(
           "https://almightysnk.com/rest/login/login/" +
               phone.toString() +
@@ -42,11 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
               password.toString());
       final responseJson = json.decode(response.body);
       if (responseJson["allow"] == "USER AUTHENTICATED") {
-        LocalService.saveData(globals.AUTH_KEY, responseJson[globals.AUTH_KEY]);
-        LocalService.saveData(
+        LocalService.saveAPIData(
+            globals.AUTH_KEY, responseJson[globals.AUTH_KEY]);
+        LocalService.saveAPIData(
             globals.CONTACT_KEY, responseJson[globals.CONTACT_KEY]);
-        return Future.value(Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => TabsPage())));
+        return Future.value(Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => TabsPage())));
       } else if (responseJson["allow"] == "USER NOT ACTIVE") {
         Fluttertoast.showToast(
             msg: "You are not allowed to login!",
@@ -56,8 +53,8 @@ class _SplashScreenState extends State<SplashScreen> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        return Future.value(Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => LoginPage())));
+        return Future.value(Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => LoginPage())));
       } else if (responseJson["allow"] == "USER AUTHENTICATION FAILED") {
         Fluttertoast.showToast(
             msg: "Wrong username/password!",
@@ -67,8 +64,8 @@ class _SplashScreenState extends State<SplashScreen> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        return Future.value(Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => LoginPage())));
+        return Future.value(Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => LoginPage())));
       } else {
         Fluttertoast.showToast(
             msg: "Unable to login!",
@@ -78,12 +75,12 @@ class _SplashScreenState extends State<SplashScreen> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        return Future.value(Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => LoginPage())));
+        return Future.value(Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => LoginPage())));
       }
-    }else{
-      return Future.value(Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (_) => LoginPage())));
+    } else {
+      return Future.value(Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => LoginPage())));
     }
   }
 
@@ -101,25 +98,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   flex: 4,
                   child: Container(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/AlmightyLogo.png',
-                            height: 150,
-                            width: 150,
-                          ),
-                          Container(
-                            height: 20,
-                          ),
-                          new Text(
-                            'Welcome To Almighty',
-                            style: new TextStyle(fontSize: 20.0),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                          ),
-                        ],
-                      )),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/AlmightyLogo.png',
+                        height: 150,
+                        width: 150,
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      new Text(
+                        'Welcome To Almighty',
+                        style: new TextStyle(fontSize: 20.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                      ),
+                    ],
+                  )),
                 ),
                 Expanded(
                   child: Column(

@@ -2,14 +2,10 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/pages/login.dart';
-import 'package:almighty/services/local_data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:almighty/routes/page_route.dart';
-import 'package:almighty/globals.dart' as globals;
 
 class _SignupPageState extends State<SignupPage> {
   bool _showProgress = false;
