@@ -27,10 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<Widget> loadFromFuture() async {
     String phone = await LocalService.getContactMobile();
-    print("splahsreen : " + phone.toString());
     if (phone != null && phone.toString() != "") {
       String password = await LocalService.loadPassword();
-      print("splahsreen : " + password);
       final response = await http.get(
           "https://almightysnk.com/rest/login/login/" +
               phone.toString() +

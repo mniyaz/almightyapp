@@ -61,7 +61,6 @@ class PushNotificationsManager {
           "https://almightysnk.com/rest/productcontroller/updatefcm/" +
               mobileNumber +
               "/$token");
-      print("FirebaseMessaging token: $token");
 
       _initialized = true;
     }

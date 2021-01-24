@@ -25,8 +25,6 @@ class OrderHistoryPageState extends State<OrderHistoryPage> {
   Future<Null> getOrderList(String month, String year) async {
     final authKey = await LocalService.loadAuthKey();
     final mobile = await LocalService.getContactMobile();
-    print("history key: " + authKey);
-    print("history mobiel :" + mobile);
     final response = await http.get(
         "https://almightysnk.com/rest/ordercontroller/orderHistory/" +
             month +
