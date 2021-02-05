@@ -227,6 +227,14 @@ class _LoginPageState extends State<LoginPage> {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Wrong username/password!"),
       ));
+    } else if (responseJson["allow"] == "PASSWORD NOT UPDATED") {
+      setState(() {
+        _showProgress = false;
+      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+            "Password is not set for this account. Click forgot password!"),
+      ));
     } else {
       setState(() {
         _showProgress = false;

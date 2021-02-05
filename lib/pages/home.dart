@@ -30,6 +30,7 @@ class HomePageState extends State<HomePage> {
     final responseJson = json.decode(response.body);
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
+    globals.products = productListFromApi;
     if (productList == null)
       productList = List<Product>();
     else

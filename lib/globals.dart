@@ -1,8 +1,10 @@
 import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/models/order_model.dart';
+import 'package:almighty/models/product.dart';
 
 List<Items> cartItems;
+List<Product> products;
 Order order;
 final String AUTH_KEY = "authKey";
 final String CONTACT_KEY = "contactModel";

@@ -1,5 +1,6 @@
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/models/order_model.dart';
+import 'package:almighty/services/item_price_service.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -198,15 +199,8 @@ class ProductCardState extends State<ProductCard> {
 
                 if (product.itemPriceBag != null &&
                     product.itemPriceBag != "0") {
-                  if (_currentValue < 10) {
-                    item.price = product.itemPrice;
-                  } else if (_currentValue >= 10 && _currentValue < 25) {
-                    item.price = product.itemPrice10To25;
-                  } else if (_currentValue >= 25 && _currentValue <= 50) {
-                    item.price = product.itemPriceAbove25;
-                  } else if (_currentValue > 50) {
-                    item.price = product.itemPriceBag;
-                  }
+                  item.price =
+                      ItemPriceService.getProductPrice(_currentValue, product);
                 } else {
                   item.price = product.itemPrice;
                 }

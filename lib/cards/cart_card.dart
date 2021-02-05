@@ -1,4 +1,5 @@
 import 'package:almighty/models/items_model.dart';
+import 'package:almighty/services/item_price_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -93,7 +94,9 @@ class CartCardState extends State<CartCard> {
                                 product.qty = value.toInt();
                                 setState(() {
                                   product.rowTotal = (product.qty *
-                                          double.parse(product.price))
+                                          double.parse(
+                                              ItemPriceService.getItemPrice(
+                                                  product.qty, product)))
                                       .toInt()
                                       .toString();
                                 });
