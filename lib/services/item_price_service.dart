@@ -18,8 +18,9 @@ class ItemPriceService {
   }
 
   static String getItemPrice(int qtyValue, Items item) {
-    Product product =
-        globals.products.where((item) => item.itemName == item.itemName).first;
+    Product product = globals.products
+        .where((product) => product.itemName == item.productName)
+        .first;
     String itemPrice;
     if (qtyValue < 10) {
       itemPrice = product.itemPrice;

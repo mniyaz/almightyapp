@@ -6,6 +6,7 @@ import 'package:almighty/models/contact_model.dart';
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/services/local_data_service.dart';
 import 'package:almighty/widgets/navigation_drawer.dart';
+import 'package:almighty/widgets/tabs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
