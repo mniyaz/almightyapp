@@ -28,6 +28,14 @@ class HomePageState extends State<HomePage> {
         "https://almightysnk.com/rest/productcontroller/getlist/" +
             mobileNumber);
     final responseJson = json.decode(response.body);
+    final categoryResponse = await http
+        .get("https://almightysnk.com/rest/productcontroller/getCategory");
+    final categoryResponseJson = json.decode(categoryResponse.body);
+    print(categoryResponseJson);
+    categoryList.clear();
+    categoryList
+        .addAll((categoryResponseJson['data'] as List<dynamic>).cast<String>());
+    print(categoryList);
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
     globals.products = productListFromApi;
@@ -35,6 +43,9 @@ class HomePageState extends State<HomePage> {
       productList = List<Product>();
     else
       productList.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _openFilterDialog();
+    });
     setState(() {});
   }
 
@@ -44,9 +55,6 @@ class HomePageState extends State<HomePage> {
     super.initState();
     _showProgress = false;
     getProductList();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _openFilterDialog();
-    });
   }
 
   List<String> categoryList = [

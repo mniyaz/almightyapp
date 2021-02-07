@@ -4,14 +4,15 @@ import 'package:almighty/globals.dart' as globals;
 
 class ItemPriceService {
   static String getProductPrice(int qtyValue, Product product) {
+    print(qtyValue);
     String itemPrice;
     if (qtyValue < 10) {
       itemPrice = product.itemPrice;
     } else if (qtyValue >= 10 && qtyValue < 25) {
       itemPrice = product.itemPrice10To25;
-    } else if (qtyValue >= 25 && qtyValue <= 50) {
+    } else if (qtyValue >= 25 && qtyValue < 50) {
       itemPrice = product.itemPriceAbove25;
-    } else if (qtyValue > 50) {
+    } else if (qtyValue >= 50) {
       itemPrice = product.itemPriceBag;
     }
     return itemPrice;
@@ -26,9 +27,9 @@ class ItemPriceService {
       itemPrice = product.itemPrice;
     } else if (qtyValue >= 10 && qtyValue < 25) {
       itemPrice = product.itemPrice10To25;
-    } else if (qtyValue >= 25 && qtyValue <= 50) {
+    } else if (qtyValue >= 25 && qtyValue < 50) {
       itemPrice = product.itemPriceAbove25;
-    } else if (qtyValue > 50) {
+    } else if (qtyValue >= 50) {
       itemPrice = product.itemPriceBag;
     }
     return itemPrice;

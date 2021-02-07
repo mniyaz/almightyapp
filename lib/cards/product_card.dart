@@ -136,7 +136,7 @@ class ProductCardState extends State<ProductCard> {
                             DataCell(
                               Container(
                                 child: Text(
-                                  "Above 25",
+                                  "25 & Above",
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -156,7 +156,7 @@ class ProductCardState extends State<ProductCard> {
                             DataCell(
                               Container(
                                 child: Text(
-                                  "Above 50",
+                                  "50 & Above",
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
