@@ -100,22 +100,25 @@ class CartPageState extends State<CartPage> {
                           ])
                         : new Container(
                             alignment: Alignment.center,
-                            child: Column(children: <Widget>[
-                              Text("No items in Cart."),
-                              RaisedButton(
-                                  child: Text(
-                                    "Continue Shopping",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => TabsPage()));
-                                  }),
-                            ]))));
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("No items in Cart."),
+                                  RaisedButton(
+                                      child: Text(
+                                        "Continue Shopping",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => TabsPage()));
+                                      }),
+                                ]))));
   }
 
   void deleteItem(Items item) {

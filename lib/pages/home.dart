@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   TextEditingController controller = new TextEditingController();
   List<Product> productList;
   List<Product> productListFromApi = List<Product>();
@@ -31,21 +31,22 @@ class HomePageState extends State<HomePage> {
     final categoryResponse = await http
         .get("https://almightysnk.com/rest/productcontroller/getCategory");
     final categoryResponseJson = json.decode(categoryResponse.body);
-    print(categoryResponseJson);
+
     categoryList.clear();
     categoryList
         .addAll((categoryResponseJson['data'] as List<dynamic>).cast<String>());
-    print(categoryList);
+
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
     globals.products = productListFromApi;
-    if (productList == null)
+    if (productList == null) {
       productList = List<Product>();
-    else
+      productList.addAll(productListFromApi);
+    } else {
       productList.clear();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _openFilterDialog();
-    });
+      productList.addAll(productListFromApi);
+    }
+    selectedCategoryList.addAll(categoryList);
     setState(() {});
   }
 
@@ -55,6 +56,22 @@ class HomePageState extends State<HomePage> {
     super.initState();
     _showProgress = false;
     getProductList();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState appLifecycleState) {
+    // TODO: implement didChangeAppLifecycleState
+    if (appLifecycleState == AppLifecycleState.resumed) {
+      getProductList();
+    }
   }
 
   List<String> categoryList = [
