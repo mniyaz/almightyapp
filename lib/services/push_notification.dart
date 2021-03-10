@@ -2,8 +2,7 @@ import 'package:almighty/services/local_data_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:almighty/globals.dart' as globals;
-import 'dart:convert';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -48,8 +47,17 @@ class PushNotificationsManager {
         onMessage: (Map<String, dynamic> message) async {
           showNotification(message['notification']['title'],
               message['notification']['body']);
+          bool badgeSupported = await FlutterAppBadger.isAppBadgeSupported();
+          if(badgeSupported){
+            FlutterAppBadger.updateBadgeCount(1);
+          };
         },
-        onLaunch: (Map<String, dynamic> message) async {},
+        onLaunch: (Map<String, dynamic> message) async {
+          bool badgeSupported = await FlutterAppBadger.isAppBadgeSupported();
+          if(badgeSupported){
+            FlutterAppBadger.removeBadge();
+          }
+        },
         onResume: (Map<String, dynamic> message) async {},
       );
 

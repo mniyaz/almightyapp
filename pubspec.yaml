@@ -34,6 +34,7 @@ dependencies:
   flutter_local_notifications: ^3.0.3
   filter_list: ^0.0.5
   shared_preferences: ^0.5.12+4
+  flutter_app_badger: ^1.1.2
   flutter:
     sdk: flutter
   flutter_localizations:

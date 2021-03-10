@@ -95,7 +95,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (selectedCategoryList != null && selectedCategoryList.length > 0) {
       productList.clear();
       selectedCategoryList.forEach((category) {
-        print(category.toString());
+
         productList.addAll(productListFromApi
             .where((product) => product.category == category)
             .toList());
@@ -318,7 +318,6 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
       List<Product> dummyListData = List<Product>();
       dummySearchList.forEach((item) {
         if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
-          print(json.encode(item));
           dummyListData.add(item);
         }
       });
