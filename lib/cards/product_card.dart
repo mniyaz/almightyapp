@@ -1,5 +1,6 @@
 import 'package:almighty/models/items_model.dart';
 import 'package:almighty/models/order_model.dart';
+import 'package:almighty/models/price_model.dart';
 import 'package:almighty/services/item_price_service.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -83,103 +84,53 @@ class ProductCardState extends State<ProductCard> {
                 labelText: product.itemUnitType == "KG" ? "Weight" : "Unit",
               ),
             ),
-            product.itemPriceBag != null && product.itemPriceBag != "0"
+            product.prices != null && product.prices.length > 0
                 ? Container(
                     child: DataTable(
-                      columns: [
-                        DataColumn(label: Text(product.itemUnitType)),
-                        DataColumn(label: Text("Price")),
-                      ],
-                      rows: [
-                        DataRow(
-                          cells: [
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "Below 10",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                        columns: [
+                          DataColumn(label: Text(product.itemUnitType)),
+                          DataColumn(label: Text("Price")),
+                        ],
+                        rows: product.prices
+                            .map(
+                              (price) => DataRow(
+                                cells: [
+                                  DataCell(
+                                    Container(
+                                      child: Text(
+                                        price.lessThan == 0
+                                            ? price.greaterThan.toString() +
+                                                ' & ' +
+                                                "Above"
+                                            : price.greaterThan.toString() +
+                                                ' - ' +
+                                                price.lessThan.toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      child: Text(
+                                        "\u20B9" + price.price.toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "\u20B9" + product.itemPrice,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "10 To 25",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "\u20B9" + product.itemPrice10To25,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "25 & Above",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "\u20B9" + product.itemPriceAbove25,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "50 & Above",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  "\u20B9" + product.itemPriceBag,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            )
+                            .toList()),
                   )
                 : Container(
                     width: double.infinity,
                     child: DataTable(
                       columns: [
                         DataColumn(label: Text("Price")),
-                        DataColumn(label: Text("\u20B9" + product.itemPrice)),
+                        DataColumn(
+                            label: Text(product.itemPrice != null
+                                ? "\u20B9" + product.itemPrice
+                                : "\u20B9" + "0")),
                       ],
                       rows: [],
                     ),
@@ -197,8 +148,8 @@ class ProductCardState extends State<ProductCard> {
 
                 item.qty = int.parse(_controller.text);
 
-                if (product.itemPriceBag != null &&
-                    product.itemPriceBag != "0") {
+                if (product.prices != null &&
+                    product.prices.length > 0) {
                   item.price =
                       ItemPriceService.getProductPrice(_currentValue, product);
                 } else {
@@ -307,9 +258,15 @@ class ProductCardState extends State<ProductCard> {
               Container(
                 padding: EdgeInsets.fromLTRB(0, 15, 5, 0),
                 child: Text(
-                  product.itemPriceBag != null
-                      ? "\u20B9" + " " + product.itemPriceBag + " Onwards"
-                      : "\u20B9" + " " + product.itemPrice,
+                  product.prices != null && product.prices.length > 0
+                      ? "\u20B9" +
+                          " " +
+                          product.prices[product.prices.length - 1].price
+                              .toString() +
+                          " Onwards"
+                      : product.itemPrice != null
+                          ? "\u20B9" + product.itemPrice
+                          : "\u20B9" + "0",
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

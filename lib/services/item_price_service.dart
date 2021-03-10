@@ -4,17 +4,14 @@ import 'package:almighty/globals.dart' as globals;
 
 class ItemPriceService {
   static String getProductPrice(int qtyValue, Product product) {
-    print(qtyValue);
     String itemPrice;
-    if (qtyValue < 10) {
-      itemPrice = product.itemPrice;
-    } else if (qtyValue >= 10 && qtyValue < 25) {
-      itemPrice = product.itemPrice10To25;
-    } else if (qtyValue >= 25 && qtyValue < 50) {
-      itemPrice = product.itemPriceAbove25;
-    } else if (qtyValue >= 50) {
-      itemPrice = product.itemPriceBag;
-    }
+    print(product.prices);
+    product.prices.forEach((price) => {
+      
+          if (price.greaterThan < qtyValue && qtyValue > price.lessThan)
+            {itemPrice = price.price.toString()}
+        });
+    print(itemPrice);
     return itemPrice;
   }
 
@@ -23,15 +20,10 @@ class ItemPriceService {
         .where((product) => product.itemName == item.productName)
         .first;
     String itemPrice;
-    if (qtyValue < 10) {
-      itemPrice = product.itemPrice;
-    } else if (qtyValue >= 10 && qtyValue < 25) {
-      itemPrice = product.itemPrice10To25;
-    } else if (qtyValue >= 25 && qtyValue < 50) {
-      itemPrice = product.itemPriceAbove25;
-    } else if (qtyValue >= 50) {
-      itemPrice = product.itemPriceBag;
-    }
+    product.prices.map((price) => {
+          if (price.lessThan < qtyValue && qtyValue > price.greaterThan)
+            {itemPrice = price.price.toString()}
+        });
     return itemPrice;
   }
 }

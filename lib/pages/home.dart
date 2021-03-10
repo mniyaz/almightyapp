@@ -39,6 +39,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
     productListFromApi =
         (responseJson as List).map((i) => Product.fromJson(i)).toList();
     globals.products = productListFromApi;
+
     if (productList == null) {
       productList = List<Product>();
       productList.addAll(productListFromApi);
@@ -46,7 +47,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
       productList.clear();
       productList.addAll(productListFromApi);
     }
-    selectedCategoryList.addAll(categoryList);
+
     setState(() {});
   }
 
@@ -56,6 +57,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.initState();
     _showProgress = false;
     getProductList();
+    selectedCategoryList.addAll(categoryList);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -89,15 +91,18 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Future<Null> getProductListWithFilter() async {
     await getProductList();
+
     if (selectedCategoryList != null && selectedCategoryList.length > 0) {
       productList.clear();
       selectedCategoryList.forEach((category) {
+        print(category.toString());
         productList.addAll(productListFromApi
             .where((product) => product.category == category)
             .toList());
         productList
             .sort((a, b) => a.itemName.trim().compareTo(b.itemName.trim()));
       });
+
       setState(() {});
     }
   }
@@ -313,6 +318,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
       List<Product> dummyListData = List<Product>();
       dummySearchList.forEach((item) {
         if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
+          print(json.encode(item));
           dummyListData.add(item);
         }
       });
