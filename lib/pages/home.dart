@@ -53,10 +53,10 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   bool _showProgress = false;
   @override
-  void initState() {
+  void initState() async {
     super.initState();
     _showProgress = false;
-    getProductList();
+    await getProductList();
     selectedCategoryList.addAll(categoryList);
     WidgetsBinding.instance.addObserver(this);
   }
