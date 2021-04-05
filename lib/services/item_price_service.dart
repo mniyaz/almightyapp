@@ -9,14 +9,16 @@ import 'package:flutter/material.dart';
 class ItemPriceService {
   static String getProductPrice(int qtyValue, Product product) {
     String itemPrice = "0";
-
-    product.prices.forEach((price)  {
-          if ((price.lessThan >= qtyValue || price.lessThan == 0) && qtyValue > price.greaterThan) {
-            print(price.price.toString());
-            itemPrice = price.price.toString();
-          }
-        });
-
+    if (qtyValue == 1) {
+      itemPrice = product.prices[0].price.toString();
+    } else {
+      product.prices.forEach((price) {
+        if ((price.lessThan >= qtyValue || price.lessThan == 0) &&
+            qtyValue > price.greaterThan) {
+          itemPrice = price.price.toString();
+        }
+      });
+    }
     return itemPrice;
   }
 
@@ -25,10 +27,16 @@ class ItemPriceService {
         .where((product) => product.itemName == item.productName)
         .first;
     String itemPrice;
-    product.prices.forEach((price) {
-          if ((price.lessThan >= qtyValue || price.lessThan == 0) && qtyValue > price.greaterThan)
-            {itemPrice = price.price.toString();}
-        });
+    if (qtyValue == 1) {
+      itemPrice = product.prices[0].price.toString();
+    } else {
+      product.prices.forEach((price) {
+        if ((price.lessThan >= qtyValue || price.lessThan == 0) &&
+            qtyValue > price.greaterThan) {
+          itemPrice = price.price.toString();
+        }
+      });
+    }
     return itemPrice;
   }
 }
